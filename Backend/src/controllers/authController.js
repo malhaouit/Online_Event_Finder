@@ -80,13 +80,6 @@ exports.login = async (req, res) => {
 
 	console.log('User found, verifying password');
 
-	// Manual password test
-	const manualHashedPassword = await bcrypt.hash(password, 10); // Re-hash the password
-	console.log('Manual hashed password:', manualHashedPassword);
-
-	const manualCompare = await bcrypt.compare(password, user.password);
-	console.log('Manual password match:', manualCompare);
-
         // Compare the provided password with the hashed password in the database
         const isMatch = await bcrypt.compare(password, user.password);
 	console.log('Password match:', isMatch); // Log if password comparison succeeded

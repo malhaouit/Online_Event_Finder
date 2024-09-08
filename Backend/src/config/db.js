@@ -7,7 +7,7 @@ const uri = process.env.MONGO_URI;
 async function connectDB() {
   try {
     await mongoose.connect(uri, {
-      dbName: 'Main', // Specify your database name here
+      //dbName: 'Main', // Specify your database name here
       bufferCommands: false, // Disable buffering
       serverSelectionTimeoutMS: 1000000000, // Extend timeout to 60 seconds (adjust as needed)
     });

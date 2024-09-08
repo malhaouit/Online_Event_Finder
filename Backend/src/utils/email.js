@@ -1,27 +1,22 @@
 // emailService.js
 
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const sendEmail = async (to, subject, text) => {
     try {
-        const mailOptions = {
+        const msg = {
+            to: to,
             from: process.env.EMAIL_USER,
-            to,
-            subject,
-            text
+            subject: subject,
+            text: text,
+            // You can also add html: '<strong>HTML version of the message</strong>' if needed
         };
 
-        await transporter.sendMail(mailOptions);
+        await sgMail.send(msg);
         console.log('Email sent successfully to:', to);
     } catch (err) {
         console.error('Error sending email:', err.message);
@@ -31,11 +26,10 @@ const sendEmail = async (to, subject, text) => {
 module.exports = {
     sendRegistrationEmail: async (email, name) => {
         try {
-            await sendEmail(
-                email,
-                'Welcome to Online Events Finder!',
-                `Hello ${name},\n\nWelcome to Online Events Finder. We're excited to have you on board!`
-            );
+            const subject = 'Welcome to Online Events Finder!';
+            const text = `Hello ${name},\n\nWelcome to Online Events Finder. We're excited to have you on board!`;
+
+            await sendEmail(email, subject, text);
         } catch (err) {
             console.error('Error sending registration email:', err.message);
         }
@@ -43,23 +37,21 @@ module.exports = {
 
     sendEventRegistrationEmail: async (email, name, eventName) => {
         try {
-            await sendEmail(
-                email,
-                'Event Registration Confirmation',
-                `Hello ${name},\n\nYou have successfully registered for the event "${eventName}".`
-            );
+            const subject = 'Event Registration Confirmation';
+            const text = `Hello ${name},\n\nYou have successfully registered for the event "${eventName}".`;
+
+            await sendEmail(email, subject, text);
         } catch (err) {
             console.error('Error sending event registration email:', err.message);
         }
     },
 
-    sendPasswordResetEmail: async (email, name, resetLink) => {
+    sendPasswordResetEmail: async (email, resetLink) => {
         try {
-            await sendEmail(
-                email,
-                'Password Reset Request',
-                `Hello ${name},\n\nYou have requested to reset your password. Please follow this link to reset your password: ${resetLink}`
-            );
+            const subject = 'Password Reset Request';
+            const text = `Hello,\n\nYou have requested to reset your password. Please follow this link to reset your password: ${resetLink}`;
+
+            await sendEmail(email, subject, text);
         } catch (err) {
             console.error('Error sending password reset email:', err.message);
         }

@@ -1,40 +1,43 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { getDB } = require('../config/db');
+const User = require('../models/User');  // Use the Mongoose model
 const emailService = require('../utils/email');
 const dotenv = require('dotenv');
 dotenv.config();
 
+// Register a new user
 exports.register = async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
         console.log('Starting registration process');
-        const db = getDB();
-        const userCollection = db.collection('users');
 
-        let user = await userCollection.findOne({ email });
+        // Check if user already exists
+        let user = await User.findOne({ email });
         if (user) {
             console.log('User already exists');
             return res.status(400).json({ msg: 'User already exists' });
         }
 
-        // Hash the password before storing it
+        // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        user = {
+        // Create a new user instance
+        user = new User({
             name,
             email,
             password: hashedPassword
-        };
+        });
 
-        await userCollection.insertOne(user);
+        // Save the new user in the database
+        await user.save();
         console.log('User inserted into database');
 
         // Send registration email
         await emailService.sendRegistrationEmail(email, name);
         console.log('Registration email sent');
 
+        // Create a JWT payload and sign it
         const payload = {
             user: {
                 id: user._id,
@@ -62,24 +65,29 @@ exports.register = async (req, res) => {
     }
 };
 
-
+// Login a user
 exports.login = async (req, res) => {
     const { email, password } = req.body;
+    console.log(`Attempting login for email: ${email}`); // Log the input email
 
     try {
-        const db = getDB();
-        const userCollection = db.collection('users');
-
-        const user = await userCollection.findOne({ email });
+        // Find the user using Mongoose
+        const user = await User.findOne({ email: email.toLowerCase() });
         if (!user) {
-            return res.status(400).json({ msg: 'Invalid Email' });
+	    console.log('User not found');
+            return res.status(400).json({ msg: 'Invalid email' });
         }
 
+	console.log('User found, verifying password');
+
+        // Compare the provided password with the hashed password in the database
         const isMatch = await bcrypt.compare(password, user.password);
+	console.log('Password match:', isMatch); // Log if password comparison succeeded
         if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid credentials' });
+            return res.status(400).json({ msg: 'Invalid password' });
         }
 
+        // If password matches, generate a JWT token
         const payload = {
             user: {
                 id: user._id,
@@ -103,34 +111,59 @@ exports.login = async (req, res) => {
     }
 };
 
+// Send password reset email
 exports.resetPassword = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const db = getDB();
-        const userCollection = db.collection('users');
-
-        const user = await userCollection.findOne({ email });
+        // Find the user by email using Mongoose
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
 
-        // Generate password reset token (you may want to store and validate it)
+        // Generate password reset token
         const resetToken = jwt.sign(
             { user: user._id },
             process.env.JWT_RESET_SECRET,
             { expiresIn: '1h' }
         );
 
-        // Example of password reset link (you would send this via email)
+        // Create the reset link and send email
         const resetLink = `${process.env.BASE_URL}/reset-password/${resetToken}`;
-
-        // Send password reset email
         await emailService.sendPasswordResetEmail(email, resetLink);
 
         res.json({ msg: 'Password reset email sent' });
     } catch (err) {
         console.error('Error in resetPassword controller:', err.message);
         res.status(500).send('Server error in resetPassword controller');
+    }
+};
+
+// Handle password reset
+exports.handlePasswordReset = async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+        // Verify the reset token
+        const decoded = jwt.verify(token, process.env.JWT_RESET_SECRET);
+
+        // Find the user by ID
+        const user = await User.findById(decoded.user);
+        if (!user) {
+            return res.status(400).json({ msg: 'Invalid token' });
+        }
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the user's password
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({ msg: 'Password reset successfully' });
+    } catch (err) {
+        console.error('Error in password reset:', err.message);
+        res.status(500).send('Server error in password reset');
     }
 };

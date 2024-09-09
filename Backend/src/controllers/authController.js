@@ -130,7 +130,7 @@ exports.resetPassword = async (req, res) => {
         );
 
         // Create the reset link and send email
-        const resetLink = `${process.env.BASE_URL}/reset-password/${resetToken}`;
+	const resetLink = `http://localhost:5173/reset-password/${resetToken}`;
         await emailService.sendPasswordResetEmail(email, resetLink);
 
         res.json({ msg: 'Password reset email sent' });

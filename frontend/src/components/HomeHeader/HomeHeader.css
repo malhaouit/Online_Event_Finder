@@ -1,0 +1,77 @@
+/* Overall header styling */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #ffffff; /* White background */
+  border-bottom: 1px solid #ddd; /* Light border for header */
+  box-sizing: border-box;
+}
+
+/* Logo styling */
+.header-logo-img {
+  height: 50px; /* Adjust the size of your logo as needed */
+  cursor: pointer;
+}
+
+/* Search Bar styling */
+.home-header-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 8px 15px;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.search-input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 16px;
+  width: 300px;
+  padding-left: 10px;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+
+/* Navigation styling */
+.home-header-nav {
+  display: flex;
+  gap: 20px;
+}
+
+.home-header-nav a {
+  text-decoration: none;
+  color: #333; /* Dark gray for nav links */
+  font-size: 18px;
+}
+
+.home-header-nav a:hover {
+  color: #12CB44; /* Hover effect: green */
+}
+
+/* Authentication Links (Login, Sign Up) */
+.home-header-auth {
+  display: flex;
+  gap: 20px;
+}
+
+.auth-link {
+  cursor: pointer;
+  font-size: 18px;
+  text-decoration: none;
+  color: #333;
+}
+
+.auth-link:hover {
+  color: #12CB44; /* Green hover effect */
+}

@@ -28,3 +28,39 @@ Connection: keep-alive
 }
 ### Test
 GET  http://localhost:7999/test
+### Create event
+POST http://localhost:7999/api/event/create
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZkZjAzZWRjNWMxZmVmZDY5ODUzNDBmIiwiZW1haWwiOiJuYWluYWhrNDcwQGdtYWlsLmNvbSIsIm5hbWUiOiJOYWluYSJ9LCJpYXQiOjE3MjU4OTg2NDEsImV4cCI6MTcyNTkwMjI0MX0.lU_qFDvQu0gTyJKnDyap1w8E13C-3JJcaqc8By734HY
+Content-Type: multipart/form-data
+Connection: keep-alive
+
+--boundary
+Content-Disposition: form-data; name="title"
+
+Sample Event
+--boundary
+Content-Disposition: form-data; name="description"
+
+This is a sample event description.
+--boundary
+Content-Disposition: form-data; name="date"
+
+2024-09-30
+--boundary
+Content-Disposition: form-data; name="time"
+
+14:00
+--boundary
+Content-Disposition: form-data; name="location"
+
+Sample Location
+--boundary
+Content-Disposition: form-data; name="capacity"
+
+100
+--boundary
+Content-Disposition: form-data; name="image"; filename="sample.jpg"
+Content-Type: image/jpeg
+
+<binary image data here>
+--boundary--

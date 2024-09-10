@@ -5,7 +5,7 @@ const { isEmail } = require('validator');
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: [true, 'Email is required'], unique: true, lowercase: true, validate: [isEmail, 'Please enter a valid email']},
-    password: { type: String, required: [true, 'Password is required'], minlength: 4 }
+    password: { type: String }
 });
 
 // Index definitions

@@ -15,15 +15,17 @@ app.use(cors());
 
 // Route
 app.use('/api/auth', require('./routes/authRoute'));
+app.use('/api/event', require('./routes/eventRoute'));
 
-const PORT = process.env.PORT || 8080;
+
+const PORT = process.env.PORT;
 
 connectDB()
   .then(() => {
     const server = app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
-    server.timeout = 120000000000;
+    server.timeout = 2147483647;
   })
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);

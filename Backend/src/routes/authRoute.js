@@ -21,4 +21,22 @@ router.post('/logout', (req, res) => {
   res.json({ msg: 'Logged out successfully' });
 });
 
+router.get(
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'], // Request specific scopes here
+  })
+);
+
+// Callback route after Google authenticates the user
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login', // Redirect if authentication fails
+  }),
+  (req, res) => {
+    // Successful authentication, redirect to your app
+    res.redirect('/api/event/allEvents'); // Change based on your route setup
+  }
+);
 module.exports = router;

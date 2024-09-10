@@ -87,5 +87,27 @@ module.exports = {
         await sendEmail(email, subject, text);
     },
 
+
+    // New function for sending confirmation email
+    sendConfirmationEmail: async (email, confirmLink) => {
+        try {
+            const subject = 'Please confirm your email';
+            const text = `Click the following link to confirm your email: ${confirmLink}`;
+            const html = `<p>Click <a href="${confirmLink}">here</a> to confirm your email.</p>`;
+
+            const msg = {
+                to: email,
+                from: process.env.EMAIL_USER,
+                subject: subject,
+                text: text,
+                html: html
+            };
+
+            await sgMail.send(msg);
+            console.log('Confirmation email sent to:', email);
+        } catch (err) {
+            console.error('Error sending confirmation email:', err.message);
+        }
+    }
     sendEventConfirmation,
 };

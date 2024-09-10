@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');  // Use the Mongoose model
@@ -22,49 +23,49 @@ exports.register = async (req, res) => {
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 
+	// Generate email confirmation token
+        const confirmationToken = crypto.randomBytes(20).toString('hex');
+
         // Create a new user instance
         user = new User({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+	    confirmationToken
         });
 
         // Save the new user in the database
         await user.save();
-        console.log('User inserted into database');
 
-        // Send registration email
-        await emailService.sendRegistrationEmail(email, name);
-        console.log('Registration email sent');
-
-        // Create a JWT payload and sign it
-        const payload = {
-            user: {
-                id: user._id,
-                email: user.email,
-                name: user.name
-            }
-        };
-
-        jwt.sign(
-            payload,
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' },
-            (err, token) => {
-                if (err) {
-                    console.error('JWT signing error:', err);
-                    throw err;
-                }
-                console.log('JWT generated');
-                res.json({ token });
-            }
-        );
+	// Send confirmation email
+	const confirmLink = `${process.env.BASE_URL}/api/auth/confirm/${confirmationToken}`;
+        await emailService.sendConfirmationEmail(email, confirmLink);
     } catch (err) {
         console.error('Register error:', err.message);
         res.status(500).send('Server error');
     }
 };
 
+exports.confirmEmail = async (req, res) => {
+    const { token } = req.params;
+
+    try {
+       const user = await User.findOne({ confirmationToken: token });
+       if (!user) {
+           return res.status(400).json({ msg: 'Invalid or expired confirmation token' });
+       }
+
+       user.isEmailConfirmed = true;
+       user.confirmationToken = undefined;
+       await user.save();
+
+       return res.status(200).json({ msg: 'Email confirmed successfully' });
+    } catch (err) {
+       console.error('Confirm email error:', err.message);
+       return res.status(500).send('Server error');
+    }
+};
+    
 // Login a user
 exports.login = async (req, res) => {
     const { email, password } = req.body;
@@ -78,7 +79,9 @@ exports.login = async (req, res) => {
             return res.status(400).json({ msg: 'Invalid email' });
         }
 
-	console.log('User found, verifying password');
+        if (!user.isEmailConfirmed) {
+            return res.status(400).json({ msg: 'Please confirm your email before logging in' });
+	}
 
         // Compare the provided password with the hashed password in the database
         const isMatch = await bcrypt.compare(password, user.password);

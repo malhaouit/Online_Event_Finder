@@ -6,6 +6,8 @@ const authController = require('../controllers/authController');
 // User registration
 router.post('/register', authController.register);
 
+router.get('/confirm/:token', authController.confirmEmail); // Confirmation route
+
 // User login
 router.post('/login', authController.login);
 

@@ -5,7 +5,7 @@ Connection: keep-alive
 
 {
     "name": "Naina",
-    "email": "nainahk470@gmail.com",
+    "email": "kamauwainaina29@gmail.com",
     "password": "!123Four"
 }
 ### Login
@@ -19,7 +19,7 @@ Connection: keep-alive
 }
 
 ### Reset Password
-POST http://localhost:7999/api/auth/reset-passwd
+POST http://localhost:7999/api/auth/reset-password
 Content-Type: application/json
 Connection: keep-alive
 
@@ -28,39 +28,22 @@ Connection: keep-alive
 }
 ### Test
 GET  http://localhost:7999/test
+
 ### Create event
 POST http://localhost:7999/api/event/create
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZkZjAzZWRjNWMxZmVmZDY5ODUzNDBmIiwiZW1haWwiOiJuYWluYWhrNDcwQGdtYWlsLmNvbSIsIm5hbWUiOiJOYWluYSJ9LCJpYXQiOjE3MjU4OTg2NDEsImV4cCI6MTcyNTkwMjI0MX0.lU_qFDvQu0gTyJKnDyap1w8E13C-3JJcaqc8By734HY
-Content-Type: multipart/form-data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZkZjAzZWRjNWMxZmVmZDY5ODUzNDBmIiwiZW1haWwiOiJuYWluYWhrNDcwQGdtYWlsLmNvbSIsIm5hbWUiOiJOYWluYSJ9LCJpYXQiOjE3MjU5NjgxOTQsImV4cCI6MTcyNTk3MTc5NH0.jhSVIglyUtG3ffFRsqepGxXbHnieCNmuzbIdKs28HuY
+Content-Type: application/json
 Connection: keep-alive
 
---boundary
-Content-Disposition: form-data; name="title"
+{
+    "title": "Birthday",
+    "description": "My birthday",
+    "date": "2021-07-01",
+    "time": "12:00",
+    "location": "Nairobi",
+    "capacity": 10,
+    "skipImageUpload": true
+}
 
-Sample Event
---boundary
-Content-Disposition: form-data; name="description"
-
-This is a sample event description.
---boundary
-Content-Disposition: form-data; name="date"
-
-2024-09-30
---boundary
-Content-Disposition: form-data; name="time"
-
-14:00
---boundary
-Content-Disposition: form-data; name="location"
-
-Sample Location
---boundary
-Content-Disposition: form-data; name="capacity"
-
-100
---boundary
-Content-Disposition: form-data; name="image"; filename="sample.jpg"
-Content-Type: image/jpeg
-
-<binary image data here>
---boundary--
+### Get events
+GET http://localhost:7999/api/event/allEvents

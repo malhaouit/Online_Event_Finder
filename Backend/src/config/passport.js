@@ -12,7 +12,8 @@ const opts = {
 
 module.exports = passport => {
     passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-        User.findById(jwt_payload.id)
+        console.log('JWT Payload:', jwt_payload);
+        User.findById(jwt_payload.user.id)
             .then(user => {
                 if (user) {
                     return done(null, user);

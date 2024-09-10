@@ -1,8 +1,4 @@
 .env
 node_modules
 package-lock.json
-src/controllers/eventController.js
-src/middleware/authMiddleware.js
-src/models/Event.js
-src/routes/eventRoutes.js
 requests.http

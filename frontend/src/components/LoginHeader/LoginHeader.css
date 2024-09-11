@@ -1,0 +1,69 @@
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+  }
+  
+  .login-header-logo img {
+    height: 40px;
+  }
+  
+  .login-header-nav {
+    display: flex;
+    gap: 20px;
+  }
+  /* Search Bar styling */
+.home-header-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  padding: 8px 15px;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.search-input {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 16px;
+  width: 300px;
+  padding-left: 10px;
+}
+
+.search-input::placeholder {
+  color: #999;
+}
+  
+  .nav-icon-text {
+    display: flex;
+    align-items: center;
+    color: #333;
+    font-size: 24px; 
+    transition: color 0.3s ease;
+  }
+  
+  .nav-icon-text:hover {
+    color: #12CB44; 
+  }
+  
+  .login-header-auth {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .auth-link {
+    cursor: pointer;
+  }
+  .Icons-LoginHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px; 
+  }

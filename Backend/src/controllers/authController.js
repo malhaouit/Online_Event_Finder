@@ -11,7 +11,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Register a new user
 exports.register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
     try {
         console.log('Starting registration process');
@@ -23,6 +23,10 @@ exports.register = async (req, res) => {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
+	// Check if password and confirmPassword match
+	if (password !== confirmPassword) {
+	    return res.status(400).json({ msg: 'Passwords do not match' });
+	}
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 

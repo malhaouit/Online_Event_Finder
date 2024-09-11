@@ -3,8 +3,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');  // Use the Mongoose model
 const emailService = require('../utils/email');
+const { OAuth2Client } = require('google-auth-library');
 const dotenv = require('dotenv');
 dotenv.config();
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 // Register a new user
 exports.register = async (req, res) => {
@@ -112,6 +115,49 @@ exports.login = async (req, res) => {
         console.error('Error in login controller:', err.message);
         res.status(500).send('Server error in login controller');
     }
+};
+
+exports.googleLogin = async (req, res) => {
+  const { idToken } = req.body;
+
+  try {
+    // Verify the token received from Google
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    // Find or create the user
+    let user = await User.findOne({ email: payload.email });
+    if (!user) {
+      user = new User({
+        googleId: payload.sub,
+        name: payload.name,
+        email: payload.email,
+        isEmailConfirmed: true, // Automatically confirm email for Google logins
+      });
+      await user.save();
+    }
+
+    // Generate JWT token for the user
+    const token = jwt.sign(
+      {
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+        },
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error('Google login error:', error.message);
+    res.status(500).send('Google login error');
+  }
 };
 
 // Send password reset email

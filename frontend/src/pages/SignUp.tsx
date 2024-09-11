@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import GoogleLoginButton from './GoogleLogin';
 import '../styles/SignUp.css';
 
 function SignUp() {
@@ -9,7 +10,7 @@ function SignUp() {
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
-    const response = await fetch('http://localhost:8080/api/auth/register', {
+    const response = await fetch('http://localhost:7999/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,6 +30,7 @@ function SignUp() {
 
   return (
     <div className="signup-container">
+      <GoogleLoginButton />
       <h1 className="signup-title">Sign Up</h1>
       <input
         type="text"

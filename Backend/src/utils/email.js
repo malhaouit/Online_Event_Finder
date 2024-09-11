@@ -23,7 +23,7 @@ const sendEmail = async (to, subject, text, htmlContent) => {
     }
 };
 
-const sendEventConfirmation = async (email, name, eventDetails) => {
+exports.sendEventConfirmation = async (email, name, eventDetails) => {
     try {
         const { title, date, time, location } = eventDetails;
         const subject = 'Event Created Successfully!';
@@ -109,5 +109,4 @@ module.exports = {
             console.error('Error sending confirmation email:', err.message);
         }
     }
-    sendEventConfirmation,
 };

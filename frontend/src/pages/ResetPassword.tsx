@@ -9,7 +9,7 @@ function ResetPassword() {
 
   const handleResetPassword = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/reset-password-process', {
+      const response = await fetch('http://localhost:7999/api/auth/reset-password-process', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

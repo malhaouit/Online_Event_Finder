@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/SignUp.css';
+import SignUpHeader from '../components/SignUpHeader/SignUpHeader'; 
 
 function SignUp() {
   const [name, setName] = useState('');
@@ -28,6 +29,8 @@ function SignUp() {
   };
 
   return (
+    <>
+    <SignUpHeader />
     <div className="signup-container">
       <h1 className="signup-title">Sign Up</h1>
       <input
@@ -59,6 +62,7 @@ function SignUp() {
         Already have an account? <Link to="/login">Login</Link>
       </p>
     </div>
+    </>
   );
 }
 

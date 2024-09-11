@@ -75,3 +75,22 @@
 .auth-link:hover {
   color: #12CB44; /* Green hover effect */
 }
+
+.nav-icon-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+ 
+}
+
+.nav-icon-text svg {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.nav-icon-text span {
+  font-size: 14px;
+}
+
+

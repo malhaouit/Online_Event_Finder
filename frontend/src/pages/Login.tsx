@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import LoginHeader from '../components/LoginHeader/LoginHeader'; 
 import '../styles/Login.css'; 
 
 function Login() {
@@ -35,6 +36,8 @@ function Login() {
   };
 
   return (
+    <>
+    <LoginHeader /> 
     <div className="login-container">
       <h1 className="login-title">Log in</h1>
       <input
@@ -61,6 +64,7 @@ function Login() {
         Don't have an account? <Link to="/signup">Sign Up</Link>
       </p>
     </div>
+    </>
   );
 }
 

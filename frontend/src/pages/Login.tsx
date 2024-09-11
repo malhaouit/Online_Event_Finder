@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import GoogleLoginButton from './GoogleLogin';
 import LoginHeader from '../components/LoginHeader/LoginHeader'; 
 import '../styles/Login.css'; 
 
@@ -10,7 +11,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch('http://localhost:7999/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,6 +40,7 @@ function Login() {
     <>
     <LoginHeader /> 
     <div className="login-container">
+      <GoogleLoginButton />
       <h1 className="login-title">Log in</h1>
       <input
         type="email"

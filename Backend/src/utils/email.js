@@ -23,6 +23,8 @@ const sendEmail = async (to, subject, text, htmlContent) => {
     }
 };
 
+exports.sendEventConfirmation = async (email, name, eventDetails) => {
+    try {
 // Corrected exports: Make sure all functions are properly exported
 module.exports = {
     sendRegistrationEmail: async (email, name) => {

@@ -23,13 +23,41 @@ const sendEmail = async (to, subject, text, htmlContent) => {
     }
 };
 
-const sendEventConfirmation = async (email, name, eventDetails) => {
-    try {
+// Corrected exports: Make sure all functions are properly exported
+module.exports = {
+    sendRegistrationEmail: async (email, name) => {
+        const subject = 'Welcome to Online Events Finder!';
+        const text = `Hello ${name},\n\nWelcome to Online Events Finder. We're excited to have you on board!`;
+        const html = `<p>Welcome, <strong>${name}</strong>! We're thrilled to have you join us at Online Events Finder.</p>`;
+        await sendEmail(email, subject, text, html);
+    },
+
+    sendEventRegistrationEmail: async (email, name, eventName) => {
+        const subject = 'Event Registration Confirmation';
+        const text = `Hello ${name},\n\nYou have successfully registered for the event "${eventName}".`;
+        const html = `<p>Hi <strong>${name}</strong>, you've successfully registered for <strong>${eventName}</strong>.</p>`;
+        await sendEmail(email, subject, text, html);
+    },
+
+    sendPasswordResetEmail: async (email, resetLink) => {
+        const subject = 'Password Reset Request';
+        const text = `Hello,\n\nYou have requested to reset your password. Please follow this link to reset your password: ${resetLink}`;
+        const html = `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password.</p>`;
+        await sendEmail(email, subject, text, html);
+    },
+
+    sendConfirmationEmail: async (email, confirmLink) => {
+        const subject = 'Please confirm your email';
+        const text = `Click the following link to confirm your email: ${confirmLink}`;
+        const html = `<p>Click <a href="${confirmLink}">here</a> to confirm your email.</p>`;
+        await sendEmail(email, subject, text, html);
+    },
+
+    sendEventConfirmation: async (email, name, eventDetails) => {
         const { title, date, time, location } = eventDetails;
         const subject = 'Event Created Successfully!';
-
-        // Define the email content with HTML for a nicer format
-        const htmlContent = `
+        const text = `Hello ${name},\n\nYour event "${title}" has been successfully created. Here are the details:\n\nDate: ${date}\nTime: ${time}\nLocation: ${location}\n\nWe look forward to seeing you there!`;
+        const html = `
             <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
                 <header style="text-align: center; margin-bottom: 20px;">
                     <h2 style="color: #4CAF50;">Online Events Finder</h2>
@@ -47,67 +75,9 @@ const sendEventConfirmation = async (email, name, eventDetails) => {
                 </main>
                 <footer style="text-align: center; margin-top: 20px; font-size: 12px; color: #888;">
                     <p>&copy; ${new Date().getFullYear()} Online Events Finder. All rights reserved.</p>
-                    <p>Follow us on 
-                        <a href="https://www.example.com" style="color: #4CAF50; text-decoration: none;">Facebook</a> | 
-                        <a href="https://www.example.com" style="color: #4CAF50; text-decoration: none;">Twitter</a>
-                    </p>
                 </footer>
             </div>
         `;
-
-        const text = `Hello ${name},\n\nYour event "${title}" has been successfully created. Here are the details:\n\n
-        Event Name: ${title}
-        Date: ${date}
-        Time: ${time}
-        Location: ${location}\n\n
-        We look forward to seeing you there!`;
-
-        await sendEmail(email, subject, text, htmlContent);
-    } catch (err) {
-        console.error('Error sending event confirmation email:', err.message);
+        await sendEmail(email, subject, text, html);
     }
-};
-
-module.exports = {
-    sendRegistrationEmail: async (email, name) => {
-        const subject = 'Welcome to Online Events Finder!';
-        const text = `Hello ${name},\n\nWelcome to Online Events Finder. We're excited to have you on board!`;
-        await sendEmail(email, subject, text);
-    },
-
-    sendEventRegistrationEmail: async (email, name, eventName) => {
-        const subject = 'Event Registration Confirmation';
-        const text = `Hello ${name},\n\nYou have successfully registered for the event "${eventName}".`;
-        await sendEmail(email, subject, text);
-    },
-
-    sendPasswordResetEmail: async (email, resetLink) => {
-        const subject = 'Password Reset Request';
-        const text = `Hello,\n\nYou have requested to reset your password. Please follow this link to reset your password: ${resetLink}`;
-        await sendEmail(email, subject, text);
-    },
-
-
-    // New function for sending confirmation email
-    sendConfirmationEmail: async (email, confirmLink) => {
-        try {
-            const subject = 'Please confirm your email';
-            const text = `Click the following link to confirm your email: ${confirmLink}`;
-            const html = `<p>Click <a href="${confirmLink}">here</a> to confirm your email.</p>`;
-
-            const msg = {
-                to: email,
-                from: process.env.EMAIL_USER,
-                subject: subject,
-                text: text,
-                html: html
-            };
-
-            await sgMail.send(msg);
-            console.log('Confirmation email sent to:', email);
-        } catch (err) {
-            console.error('Error sending confirmation email:', err.message);
-        }
-    }
-    sendEventConfirmation,
 };

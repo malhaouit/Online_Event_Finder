@@ -22,10 +22,6 @@ const sendEmail = async (to, subject, text, htmlContent) => {
         console.error('Error sending email:', err.message);
     }
 };
-
-exports.sendEventConfirmation = async (email, name, eventDetails) => {
-    try {
-// Corrected exports: Make sure all functions are properly exported
 module.exports = {
     sendRegistrationEmail: async (email, name) => {
         const subject = 'Welcome to Online Events Finder!';

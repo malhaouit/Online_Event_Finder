@@ -108,8 +108,14 @@ exports.login = async (req, res) => {
             { expiresIn: '1h' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token }); // Send token in response
-            }
+                res.json({
+                    token,
+                    user: {
+                      id: user._id,
+                      email: user.email,
+                      name: user.name,
+                    },
+                });             }
         );
     } catch (err) {
         console.error('Error in login controller:', err.message);
@@ -153,7 +159,14 @@ exports.googleLogin = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.status(200).json({ token });
+    res.status(200).json({
+        token,
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+        },
+      });
   } catch (error) {
     console.error('Google login error:', error.message);
     res.status(500).send('Google login error');

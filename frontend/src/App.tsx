@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import LandingPage from './pages/LandingPage';
+import CreateEvent from './pages/CreateEvent';
 
 function App() {
   // Access the client ID from environment variables
@@ -20,6 +22,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/allEvents" element={<LandingPage />} />
+          <Route path="/add-event" element={<CreateEvent />} />
         </Routes>
       </Router>
     </GoogleOAuthProvider>

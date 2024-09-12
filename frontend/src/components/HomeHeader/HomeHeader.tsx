@@ -9,7 +9,7 @@ function HomeHeader() {
   const isLoggedIn = !!localStorage.getItem('token'); // Check if the user is logged in
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove the token
+    localStorage.removeItem('token'); 
     navigate('/'); // Redirect to home page after logout
   };
 
@@ -34,12 +34,6 @@ function HomeHeader() {
 
       {/* Navigation Links */}
       <nav className="home-header-nav">
-      <Link to="/add-event">
-          <div className="nav-icon-text">
-            <FaCalendarPlus />
-            <span>Add Event</span>
-          </div>
-        </Link>
         <Link to="/">
           <div className="nav-icon-text">
             <FaHome />

@@ -40,6 +40,7 @@ exports.createEvent = (req, res) => {
     }
     upload(req, res, async (err) => {
         if (err) {
+            console.error('File upload error:', err);
             return res.status(400).json({ msg: err });
         } else {
             const { title, description, date, time, location, image, capacity } = req.body;
@@ -87,7 +88,7 @@ exports.createEvent = (req, res) => {
 exports.getEvents = async (req, res) => {
     try {
         const db = getDB();
-        const eventsCollection = db.collection('allEvents');
+        const eventsCollection = db.collection('events');
         const events = await eventsCollection.find().toArray();
         res.json(events);
     } catch (err) {

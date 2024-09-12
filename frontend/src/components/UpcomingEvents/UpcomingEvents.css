@@ -1,0 +1,83 @@
+.section-wrapper {
+    background-color: silver;
+    border-radius: 25px;
+    padding: 25px;
+    margin-top: 50px;
+}
+
+.section-header h4 {
+    font-size: 30px;
+    font-weight: 900;
+    color: black;
+    
+}
+.UpcomingEvents-item {
+    flex: 1 25% 
+}
+
+.card-wrapper {
+    background-color: white;
+    border-radius: 12px;
+    padding: 5px;
+    margin: 5px;
+    
+}
+.UpcomingEvents-item-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 5px;
+    
+}
+
+.UpcomingEvents-item-content {
+    display: flex;
+    justify-content: space-between;
+    color: black;
+}
+
+.UpcomingEvents-item-title {
+    font-size: 13px;
+    line-height: 1rem;
+    color: rgb(76, 74, 74);
+    
+}
+
+.UpcomingEvents-items {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    
+    
+}
+
+ul {
+    list-style-type: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.UpcomingEvents-button {
+    display:flex;
+    justify-content: center;
+    margin-top:50px;
+    margin-left: 44%
+  }
+
+  
+.more-events-button {
+    padding: 10px 20px;
+    background-color:  #12CB44;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .more-events-button:hover {
+    background-color:  #12CB44;
+  }
+  

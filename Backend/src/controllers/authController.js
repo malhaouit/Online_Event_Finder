@@ -45,8 +45,8 @@ exports.register = async (req, res) => {
         await user.save();
 
 	// Send confirmation email
-	const confirmLink = `${process.env.BASE_URL}/api/auth/confirm/${confirmationToken}`;
-        await emailService.sendConfirmationEmail(email, confirmLink);
+        const confirmLink = `${process.env.FRONTEND_URL}/confirm/${confirmationToken}`;
+	await emailService.sendConfirmationEmail(email, confirmLink);
     } catch (err) {
         console.error('Register error:', err.message);
         res.status(500).send('Server error');

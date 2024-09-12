@@ -79,3 +79,4 @@ module.exports = {
         await sendEmail(email, subject, text, html);
     }
 };
+

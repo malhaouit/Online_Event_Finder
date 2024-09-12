@@ -7,6 +7,11 @@
   background-color: #ffffff; /* White background */
   border-bottom: 1px solid #ddd; /* Light border for header */
   box-sizing: border-box;
+  position: fixed; /* Fixes the header at the top of the viewport */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensures the header is above other content */
 }
 
 /* Logo styling */

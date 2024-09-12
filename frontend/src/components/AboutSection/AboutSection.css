@@ -1,0 +1,37 @@
+.About-title{
+    text-align: center;
+    
+    
+}
+.About-text {
+    font-size: 25px ;
+    color:rgb(76, 74, 74);
+    font-style: italic;
+   
+}
+
+.About-title-2 {
+    margin-top: 70px;
+}
+.AboutSectionEvent {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    justify-content: space-between; /* Space items evenly */
+    gap: 20px; /* Add space between the text and image */
+  }
+  
+  .About-text-2 {
+    font-size: 25px ;
+    color:rgb(76, 74, 74);
+    font-style: italic;
+    flex: 1; /* Allow the text to take up remaining space */
+  }
+  
+  .About-image {
+    max-width: 50%; /* Ensure the image doesn't overflow */
+    height: auto;
+    flex-shrink: 0; /* Prevent the image from shrinking */
+  }
+ 
+  
+  

@@ -1,0 +1,33 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+  
+  .footer-left {
+    flex:1;
+    font-size: 15px;
+    color:rgb(76, 74, 74);
+    font-style: oblique;
+    text-align: center;
+  }
+  
+  .footer-right {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .footer-right a {
+    color: #000;
+    font-size: 20px;
+    transition: color 0.3s;
+  }
+  
+  .footer-right a:hover {
+    color: #0073b1; /* LinkedIn blue */
+  }
+  

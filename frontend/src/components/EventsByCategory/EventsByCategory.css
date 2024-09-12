@@ -1,0 +1,17 @@
+.EventsByCategory-items {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    
+}
+.EventsByCategory-item {
+    flex: 1 0 15%; /* Each item will take up 20% of the container's width */
+ 
+}
+.EventsByCategory-item-title{
+    font-size: 15px;
+    line-height: 1rem;
+    color: rgb(76, 74, 74);
+    margin-left: 35%;
+  
+}

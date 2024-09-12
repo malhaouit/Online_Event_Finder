@@ -8,6 +8,8 @@ import ResetPassword from './pages/ResetPassword';
 import LandingPage from './pages/LandingPage';
 import CreateEvent from './pages/CreateEvent';
 
+
+
 function App() {
   // Access the client ID from environment variables
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; // For Vite

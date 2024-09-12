@@ -1,0 +1,15 @@
+/* src/styles/ConfirmEmail.css */
+.confirm-email-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.confirm-email-container h1 {
+  font-size: 2em;
+  color: #12CB44; /* Use your theme's color */
+}
+
+.confirm-email-container p {
+font-size: 1.2em;
+color: #333;
+}

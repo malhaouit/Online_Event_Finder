@@ -21,12 +21,11 @@ function Login() {
 
       const data = await response.json();
 
-      if (data.token) {
-        // Store token in localStorage after successful login
+      if (response.ok) {
         localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user))
 
-        // Redirect to the home page
-        navigate('/');
+        navigate('/allEvents');
       } else {
         alert('Invalid credentials');
       }

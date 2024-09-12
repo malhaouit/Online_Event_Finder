@@ -22,35 +22,6 @@ const sendEmail = async (to, subject, text, htmlContent) => {
         console.error('Error sending email:', err.message);
     }
 };
-
-const sendEventConfirmation = async (email, name, eventDetails) => {
-    const { title, date, time, location } = eventDetails;
-    const subject = 'Event Created Successfully!';
-    const text = `Hello ${name},\n\nYour event "${title}" has been successfully created. Here are the details:\n\nDate: ${date}\nTime: ${time}\nLocation: ${location}\n\nWe look forward to seeing you there!`;
-    const html = `
-        <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-            <header style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: #4CAF50;">Online Events Finder</h2>
-            </header>
-            <main style="line-height: 1.6;">
-                <p>Hello <strong>${name}</strong>,</p>
-                <p>Your event "<strong>${title}</strong>" has been successfully created. Here are the event details:</p>
-                <ul style="list-style-type: none; padding: 0;">
-                    <li><strong>Event Name:</strong> ${title}</li>
-                    <li><strong>Date:</strong> ${date}</li>
-                    <li><strong>Time:</strong> ${time}</li>
-                    <li><strong>Location:</strong> ${location}</li>
-                </ul>
-                <p>We look forward to seeing you there!</p>
-            </main>
-            <footer style="text-align: center; margin-top: 20px; font-size: 12px; color: #888;">
-                <p>&copy; ${new Date().getFullYear()} Online Events Finder. All rights reserved.</p>
-            </footer>
-        </div>
-    `;
-    await sendEmail(email, subject, text, html);
-};
-
 module.exports = {
     sendRegistrationEmail: async (email, name) => {
         const subject = 'Welcome to Online Events Finder!';
@@ -80,5 +51,32 @@ module.exports = {
         await sendEmail(email, subject, text, html);
     },
 
-    sendEventConfirmation
+    sendEventConfirmation: async (email, name, eventDetails) => {
+        const { title, date, time, location } = eventDetails;
+        const subject = 'Event Created Successfully!';
+        const text = `Hello ${name},\n\nYour event "${title}" has been successfully created. Here are the details:\n\nDate: ${date}\nTime: ${time}\nLocation: ${location}\n\nWe look forward to seeing you there!`;
+        const html = `
+            <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <header style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #4CAF50;">Online Events Finder</h2>
+                </header>
+                <main style="line-height: 1.6;">
+                    <p>Hello <strong>${name}</strong>,</p>
+                    <p>Your event "<strong>${title}</strong>" has been successfully created. Here are the event details:</p>
+                    <ul style="list-style-type: none; padding: 0;">
+                        <li><strong>Event Name:</strong> ${title}</li>
+                        <li><strong>Date:</strong> ${date}</li>
+                        <li><strong>Time:</strong> ${time}</li>
+                        <li><strong>Location:</strong> ${location}</li>
+                    </ul>
+                    <p>We look forward to seeing you there!</p>
+                </main>
+                <footer style="text-align: center; margin-top: 20px; font-size: 12px; color: #888;">
+                    <p>&copy; ${new Date().getFullYear()} Online Events Finder. All rights reserved.</p>
+                </footer>
+            </div>
+        `;
+        await sendEmail(email, subject, text, html);
+    }
 };
+

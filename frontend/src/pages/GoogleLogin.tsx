@@ -14,12 +14,14 @@ const GoogleLoginButton: React.FC = () => {
       const res = await axios.post('http://localhost:7999/api/auth/google', { idToken });
 
       if (res.status === 200) {
-        const { token } = res.data;
-        localStorage.setItem('authToken', token);
-        console.log('Login successful');
+        const { token, user } = res.data;
+        
+        // Store the token and user data with the correct key
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
 
-        // Redirect to the home page after successful login
-        navigate('/');
+        console.log('Login successful');
+        navigate('/allEvents'); // Redirect to the home page after successful login
       } else {
         console.error('Login failed:', res.data.msg);
       }

@@ -3,6 +3,7 @@ import About_image from '../../assets/About_image.png'
 
 const AboutSection = () => {
   return (
+    <div id="about-section">
     <div className='section-wrapper'>
        <div className='section-header'>
         <h4 className='About-title'> About Online Events Finder</h4>
@@ -19,6 +20,7 @@ Our platform is tailored for both attendees looking to expand their knowledge an
        <div>
           <button className='more-events-button'>Get In Touch</button>
         </div>
+    </div>
     </div>
 
   )

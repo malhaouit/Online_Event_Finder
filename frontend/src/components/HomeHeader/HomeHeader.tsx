@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import `Link` for client-side navigation
 import './HomeHeader.css';
 import logo from '../../assets/logo.svg'; // Replace with your actual logo path
 import searchIcon from '../../assets/search-icon.svg';
@@ -89,15 +89,15 @@ function HomeHeader() {
 
       {/* Navigation Links */}
       <nav className="home-header-nav">
-        <a href="/" title="Home">
-          <FaHome className="nav-icon" />
-        </a>
-        <a href="/about" title="About">
-          <FaInfoCircle className="nav-icon" />
-        </a>
-        <a href="/add-event" title="Add Event">
+        <Link to="/add-event" title="Add Event">
           <FaCalendarPlus className="nav-icon" />
-        </a>
+        </Link>
+        <Link to="/" title="Home">
+          <FaHome className="nav-icon" />
+        </Link>
+        <Link to="/about" title="About">
+          <FaInfoCircle className="nav-icon" />
+        </Link>
       </nav>
 
       {/* Authentication Links */}
@@ -109,12 +109,12 @@ function HomeHeader() {
           </>
         ) : (
           <>
-            <a href="/login" className="auth-link" title="Login">
+            <Link to="/login" className="auth-link" title="Login">
               <FaSignInAlt className="nav-icon" />
-            </a>
-            <a href="/signup" className="auth-link" title="Sign Up">
+            </Link>
+            <Link to="/signup" className="auth-link" title="Sign Up">
               <FaUserPlus className="nav-icon" />
-            </a>
+            </Link>
           </>
         )}
       </div>

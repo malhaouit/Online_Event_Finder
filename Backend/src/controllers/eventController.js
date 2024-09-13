@@ -95,4 +95,45 @@ exports.getEvents = async (req, res) => {
         console.error(err.message);
         res.status(500).send('Server error');
     }
+}
+
+// Search for events by title, description, or location
+exports.searchEvents = async (req, res) => {
+    try {
+	const query = req.query.q; // Get the search query from the request
+
+	// Ensure the query is a string
+	if (!query || typeof query !== 'string') {
+	    return res.status(400).json({ msg: 'Invalid search query' });
+	}
+
+	    // Perform a case-insensitive search for events using the query in title or description
+        const events = await Event.find({
+            $or: [
+                { title: { $regex: query, $options: 'i' } },  // Case-insensitive search on title
+                { description: { $regex: query, $options: 'i' } },  // Case-insensitive search on description
+            ]
+        });
+
+        res.json(events);
+    } catch (error) {
+        console.error('Error searching events:', error.message);
+        res.status(500).send('Server error');
+    }
+};
+
+// Fetch event details by ID
+exports.getEventById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const event = await Event.findById(id).populate('organizer', 'name email'); // Optionally populate the organizer details
+        if (!event) {
+            return res.status(404).json({ msg: 'Event not found' });
+	}
+        res.json(event);
+    } catch (err) {
+	console.error('Error fetching event details:', err.message);
+        res.status(500).send('Server error');
+    }
 };

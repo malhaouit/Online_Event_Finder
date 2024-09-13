@@ -10,4 +10,8 @@ router.post('/create', authMiddleware('jwt'), (req, res, next) => {
 }, eventController.createEvent);
 router.get('/allEvents', authMiddleware('jwt'), eventController.getEvents);
 
+router.get('/search', eventController.searchEvents);
+
+router.get('/:id', eventController.getEventById);
+
 module.exports = router;

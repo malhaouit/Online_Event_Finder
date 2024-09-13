@@ -7,7 +7,6 @@ import Python_course from '../../assets/Python_course.jpg'
 import { MdDateRange } from "react-icons/md";
 import { TbClockHour10 } from "react-icons/tb";
 
-
 const UpcomingEvents = () => {
   return (
     <div className='section-wrapper'>
@@ -15,6 +14,7 @@ const UpcomingEvents = () => {
         <h4> Upcoming Events</h4>
        </div>
        <div className='UpcomingEvents-items'>
+        {/* Artificial Intelligence Event */}
         <div className='UpcomingEvents-item'>
             <div className='card-wrapper'>
                 <img className='UpcomingEvents-item-image' src={Artificial_intelligence}/>
@@ -30,6 +30,8 @@ const UpcomingEvents = () => {
                 </div>
             </div>
         </div>
+
+        {/* Cyber Security Event */}
         <div className='UpcomingEvents-item'>
             <div className='card-wrapper'>
                 <img className='UpcomingEvents-item-image' src={cyber_security}/>
@@ -40,11 +42,13 @@ const UpcomingEvents = () => {
                     </h4>
                     <ul>
                         <li><MdDateRange /> <span> 15 Sept 2024 </span></li>
-                        <li><TbClockHour10 /> <span> 9:00</span></li>
+                        <li><TbClockHour10 /><span> 9:00</span></li>
                     </ul>
                 </div>
             </div>
         </div>
+
+        {/* Data Science Event */}
         <div className='UpcomingEvents-item'>
             <div className='card-wrapper'>
                 <img className='UpcomingEvents-item-image' src={Data_science}/>
@@ -60,7 +64,8 @@ const UpcomingEvents = () => {
                 </div>
             </div>
         </div>
-       
+
+        {/* Python Course Event */}
         <div className='UpcomingEvents-item'>
             <div className='card-wrapper'>
                 <img className='UpcomingEvents-item-image' src={Python_course}/>
@@ -76,73 +81,14 @@ const UpcomingEvents = () => {
                 </div>
             </div>
         </div>
-       
-        <div className='UpcomingEvents-item'>
-            <div className='card-wrapper'>
-                <img className='UpcomingEvents-item-image' src={Artificial_intelligence}/>
-                <div className='UpcomingEvents-item-content'>
-                    <h4 className='UpcomingEvents-item-title'>
-                        Artificial Intelligence course <br />
-                        <span> Education</span>
-                    </h4>
-                    <ul>
-                        <li><MdDateRange /> <span> 15 Sept 2024 </span></li>
-                        <li><TbClockHour10 /><span> 9:00</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div className='UpcomingEvents-item'>
-            <div className='card-wrapper'>
-                <img className='UpcomingEvents-item-image' src={Artificial_intelligence}/>
-                <div className='UpcomingEvents-item-content'>
-                    <h4 className='UpcomingEvents-item-title'>
-                        Artificial Intelligence course <br />
-                        <span> Education</span>
-                    </h4>
-                    <ul>
-                        <li><MdDateRange /> <span> 15 Sept 2024 </span></li>
-                        <li><TbClockHour10 /><span> 9:00</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div className='UpcomingEvents-item'>
-            <div className='card-wrapper'>
-                <img className='UpcomingEvents-item-image' src={Artificial_intelligence}/>
-                <div className='UpcomingEvents-item-content'>
-                    <h4 className='UpcomingEvents-item-title'>
-                        Artificial Intelligence course <br />
-                        <span> Education</span>
-                    </h4>
-                    <ul>
-                        <li><MdDateRange /> <span> 15 Sept 2024 </span></li>
-                        <li><TbClockHour10 /><span> 9:00</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div className='UpcomingEvents-item'>
-            <div className='card-wrapper'>
-                <img className='UpcomingEvents-item-image' src={Artificial_intelligence}/>
-                <div className='UpcomingEvents-item-content'>
-                    <h4 className='UpcomingEvents-item-title'>
-                        Artificial Intelligence course <br />
-                        <span> Education</span>
-                    </h4>
-                    <ul>
-                        <li><MdDateRange /> <span> 15 Sept 2024 </span></li>
-                        <li><TbClockHour10 /><span> 9:00</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div className='UpcomingEvents-button'>
-          <button className='more-events-button'>More Events</button>
-        </div>
+       </div>
+
+       {/* Button Container */}
+       <div className='UpcomingEvents-button-container'>
+         <button className='more-events-button'>More Events</button>
        </div>
     </div>
   )
 }
 
-export default UpcomingEvents
+export default UpcomingEvents;

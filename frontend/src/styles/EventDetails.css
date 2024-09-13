@@ -1,0 +1,74 @@
+/* Container for the entire event details page */
+.event-details {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9; /* Light background */
+  border-radius: 10px;        /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  font-family: 'Arial', sans-serif;
+  color: #333; /* Text color */
+}
+
+/* Event title styling */
+.event-details h1 {
+  font-size: 2.5em;
+  color: #333; /* Darker text for the title */
+  margin-bottom: 10px;
+  text-align: center;
+  border-bottom: 2px solid #12cb44; /* Accent underline */
+  padding-bottom: 10px;
+}
+
+/* Event description paragraph */
+.event-details p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin: 15px 0;
+}
+
+/* Date and Location information styling */
+.event-details .event-info {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  background-color: #eef6ee;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+/* Highlight the Date and Location labels */
+.event-details .event-info label {
+  color: #12cb44; /* Green color for labels */
+  font-size: 1.1em;
+}
+
+/* For Event Capacity */
+.event-details .capacity {
+  margin-top: 20px;
+  background-color: #e0f7fa; /* Light blue background */
+  padding: 10px 15px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* For the button or call to action (if needed) */
+.event-details .cta-button {
+  margin-top: 30px;
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #12cb44; /* Green button */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2em;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.event-details .cta-button:hover {
+  background-color: #0fa233; /* Darker green on hover */
+}

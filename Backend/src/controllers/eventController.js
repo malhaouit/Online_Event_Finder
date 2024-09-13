@@ -65,7 +65,7 @@ exports.createEvent = (req, res) => {
                     date,
                     time,
                     location,
-                    image: req.file ? req.file.path : null,
+                    image: req.file ? `uploads/${req.file.filename}` : null,
                     capacity,
                     organizer: user.id
                 });

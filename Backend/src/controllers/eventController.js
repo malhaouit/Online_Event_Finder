@@ -40,8 +40,12 @@ exports.createEvent = (req, res) => {
     }
     upload(req, res, async (err) => {
         if (err) {
+	    if (err.code === 'LIMIT_FILE_SIZE') {
+		console.log('File upload error:', err);
+		return res.status(400).json({ msg: 'Image size should be less than 1MB.' });
+	    }
             console.error('File upload error:', err);
-            return res.status(400).json({ msg: err });
+            return res.status(400).json({ msg: 'File upload error.' });
         } else {
             const { title, description, date, time, location, image, capacity } = req.body;
 
@@ -61,7 +65,7 @@ exports.createEvent = (req, res) => {
                     date,
                     time,
                     location,
-                    image: req.file ? req.file.path : null,
+                    image: req.file ? `uploads/${req.file.filename}` : null,
                     capacity,
                     organizer: user.id
                 });

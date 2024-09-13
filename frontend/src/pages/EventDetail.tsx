@@ -9,13 +9,11 @@ type Event = {
   date: string;
   location: string;
   capacity?: number;
+  image?: string;  // Add the image field to the Event type
 };
 
 function EventDetails() {
-  // Extract the eventId from the URL parameters
-  // const { eventId } = useParams();
   const { eventId } = useParams<{ eventId: string }>();
-  // const [event, setEvent] = useState(null);
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -36,26 +34,24 @@ function EventDetails() {
 
         const data = await response.json();
         setEvent(data);
-        setLoading(false);  // Stop loading after data is fetched
+        setLoading(false);
       } catch (err: unknown) {
-	if (err instanceof Error) {
-	  setError(err.message);
-	} else {
-	  setError('An unknown error occurred');
-	}
-        setLoading(false);  // Stop loading if there was an error
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+        setLoading(false);
       }
     };
 
     fetchEventDetails();
   }, [eventId]);
 
-  // Show loading message while fetching data
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // Display an error message if any
   if (error) {
     return <div className="error-message">{error}</div>;
   }
@@ -64,9 +60,11 @@ function EventDetails() {
     return <div>No event found.</div>;
   }
 
-  // Display the event details
   return (
     <div className="event-details">
+      {/* Display the event image if available */}
+      {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
+      
       <h1>{event.title}</h1>
       <p>{event.description}</p>
 
@@ -86,7 +84,6 @@ function EventDetails() {
         <label>Capacity:</label> {event.capacity}
       </div>
 
-      {/* Add a button or other features */}
       <button className="cta-button">Register for this event</button>
     </div>
   );

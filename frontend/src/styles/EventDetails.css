@@ -3,20 +3,29 @@
   max-width: 800px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #f9f9f9; /* Light background */
-  border-radius: 10px;        /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
-  color: #333; /* Text color */
+  color: #333;
+}
+
+/* Event image styling */
+.event-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  object-fit: cover;
 }
 
 /* Event title styling */
 .event-details h1 {
   font-size: 2.5em;
-  color: #333; /* Darker text for the title */
+  color: #333;
   margin-bottom: 10px;
   text-align: center;
-  border-bottom: 2px solid #12cb44; /* Accent underline */
+  border-bottom: 2px solid #12cb44;
   padding-bottom: 10px;
 }
 
@@ -40,14 +49,14 @@
 
 /* Highlight the Date and Location labels */
 .event-details .event-info label {
-  color: #12cb44; /* Green color for labels */
+  color: #12cb44;
   font-size: 1.1em;
 }
 
 /* For Event Capacity */
 .event-details .capacity {
   margin-top: 20px;
-  background-color: #e0f7fa; /* Light blue background */
+  background-color: #e0f7fa;
   padding: 10px 15px;
   border-radius: 8px;
   text-align: center;
@@ -59,7 +68,7 @@
   display: block;
   width: 100%;
   padding: 12px;
-  background-color: #12cb44; /* Green button */
+  background-color: #12cb44;
   color: white;
   border: none;
   border-radius: 8px;
@@ -70,5 +79,5 @@
 }
 
 .event-details .cta-button:hover {
-  background-color: #0fa233; /* Darker green on hover */
+  background-color: #0fa233;
 }

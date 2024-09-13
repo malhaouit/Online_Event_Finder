@@ -46,12 +46,12 @@ function HomeHeader() {
             <span>Home</span>
           </div>
         </Link>
-        <Link to="/about">
+        <a href="#about-section">
           <div className="nav-icon-text">
             <FaInfoCircle />
             <span>About</span>
           </div>
-        </Link>
+        </a>
       </nav>
 
       {/* Authentication Links */}
@@ -80,3 +80,4 @@ function HomeHeader() {
 }
 
 export default HomeHeader;
+

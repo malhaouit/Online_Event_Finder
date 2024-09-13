@@ -1,13 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/EventDetails.css';
 
+type Event = {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+  capacity?: number;
+};
+
 function EventDetails() {
   // Extract the eventId from the URL parameters
-  const { eventId } = useParams();
-  const [event, setEvent] = useState(null);  // State to hold the event data
-  const [loading, setLoading] = useState(true);  // State for loading status
-  const [error, setError] = useState('');  // State for handling errors
+  // const { eventId } = useParams();
+  const { eventId } = useParams<{ eventId: string }>();
+  // const [event, setEvent] = useState(null);
+  const [event, setEvent] = useState<Event | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchEventDetails = async () => {
@@ -26,8 +37,12 @@ function EventDetails() {
         const data = await response.json();
         setEvent(data);
         setLoading(false);  // Stop loading after data is fetched
-      } catch (err) {
-        setError(err.message);
+      } catch (err: unknown) {
+	if (err instanceof Error) {
+	  setError(err.message);
+	} else {
+	  setError('An unknown error occurred');
+	}
         setLoading(false);  // Stop loading if there was an error
       }
     };
@@ -43,6 +58,10 @@ function EventDetails() {
   // Display an error message if any
   if (error) {
     return <div className="error-message">{error}</div>;
+  }
+
+  if (!event) {
+    return <div>No event found.</div>;
   }
 
   // Display the event details

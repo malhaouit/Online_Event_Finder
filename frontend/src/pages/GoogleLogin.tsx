@@ -30,8 +30,8 @@ const GoogleLoginButton: React.FC = () => {
     }
   };
 
-  const handleGoogleLoginFailure = (error: any) => {
-    console.error('Google login failed:', error);
+  const handleGoogleLoginFailure = () => {
+    console.error('Google login failed');
   };
 
   return (

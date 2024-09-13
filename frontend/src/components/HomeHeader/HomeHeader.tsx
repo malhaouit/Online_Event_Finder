@@ -1,71 +1,111 @@
-import { Link, useNavigate } from 'react-router-dom';
-import './HomeHeader.css'; // Import the styles for the HomeHeader
-import logo from '../../assets/logo.svg'; // Import your logo file
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './HomeHeader.css';
+import logo from '../../assets/logo.svg'; // Replace with your actual logo path
 import searchIcon from '../../assets/search-icon.svg';
 import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'react-icons/fa';
 
 function HomeHeader() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]); // Store search results
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem('token'); // Check if the user is logged in
+  const isLoggedIn = !!localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user')); // Assuming the user info is stored in localStorage
+
+  // Fetch matching events as the user types
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (searchQuery.length > 2) {
+        const response = await fetch(`http://localhost:7999/api/event/search?q=${searchQuery}`);
+        const data = await response.json();
+        setSearchResults(data);
+      } else {
+        setSearchResults([]);
+      }
+    };
+    fetchSearchResults();
+  }, [searchQuery]);
+
+  const handleSearch = () => {
+    if (searchQuery) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleEventClick = (eventId) => {
+    navigate(`/event/${eventId}`);
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    navigate('/'); // Redirect to home page after logout
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/');
   };
 
   return (
     <header className="home-header">
-      {/* Logo image */}
+      {/* Logo */}
       <div className="home-header-logo">
-        <Link to="/">
+        <a href="/">
           <img src={logo} alt="Online Event Finder" className="header-logo-img" />
-        </Link>
+        </a>
       </div>
 
-      {/* Search Bar */}
+      {/* Search Bar with Icon */}
       <div className="home-header-search">
-	<img src={searchIcon} alt="Search Icon" className="search-icon" />
+        <img
+          src={searchIcon}
+          alt="Search Icon"
+          className="search-icon"
+          onClick={handleSearch}
+        />
         <input
           type="text"
-          placeholder="Search events, profiles..."
+          placeholder="Search events..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="search-input"
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
+        {searchResults.length > 0 && (
+          <ul className="search-dropdown">
+            {searchResults.map((event) => (
+              <li key={event._id} onClick={() => handleEventClick(event._id)}>
+                {event.title}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Navigation Links */}
       <nav className="home-header-nav">
-        <Link to="/">
-          <div className="nav-icon-text">
-            <FaHome />
-            <span>Home</span>
-          </div>
-        </Link>
-        <Link to="/about">
-          <div className="nav-icon-text">
-            <FaInfoCircle />
-            <span>About</span>
-          </div>
-        </Link>
+        <a href="/" title="Home">
+          <FaHome className="nav-icon" />
+        </a>
+        <a href="/about" title="About">
+          <FaInfoCircle className="nav-icon" />
+        </a>
+        <a href="/add-event" title="Add Event">
+          <FaCalendarPlus className="nav-icon" />
+        </a>
       </nav>
 
       {/* Authentication Links */}
       <div className="home-header-auth">
         {isLoggedIn ? (
-          <span onClick={handleLogout} className="auth-link">Logout</span>
+          <>
+            <span className="user-info">{user?.name || user?.email}</span>
+            <span onClick={handleLogout} className="auth-link">Logout</span>
+          </>
         ) : (
           <>
-            <Link to="/login" className="auth-link">
-              <div className="nav-icon-text">
-                <FaSignInAlt />
-                <span>Login</span>
-              </div>
-            </Link>
-            <Link to="/signup" className="auth-link">
-              <div className="nav-icon-text">
-                <FaUserPlus />
-                <span>Sign Up</span>
-              </div>
-            </Link>
+            <a href="/login" className="auth-link" title="Login">
+              <FaSignInAlt className="nav-icon" />
+            </a>
+            <a href="/signup" className="auth-link" title="Sign Up">
+              <FaUserPlus className="nav-icon" />
+            </a>
           </>
         )}
       </div>

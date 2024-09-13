@@ -1,8 +1,14 @@
 .main-container {
-    padding: 50px;
-    background-color: rgb(209, 209, 209);
-    border-radius: 25px;
-    margin: 25px;
-    margin-top: 50px;
-    color : white;
+    padding: 30px;
+    margin: 0 auto;
+    max-width: 1200px;
+    color: black;
+    background-color: transparent;
+    border-radius: 0px; /* Ensure no border radius */
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        padding: 20px;
+    }
 }

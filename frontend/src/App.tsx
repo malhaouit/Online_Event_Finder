@@ -9,6 +9,9 @@ import ConfirmEmail from './pages/ConfirmEmail';
 import ConfirmationSuccess from './pages/ConfirmationSuccess';
 import LandingPage from './pages/LandingPage';
 import CreateEvent from './pages/CreateEvent';
+import Search from './pages/Search';
+import SearchResults from './pages/SearchResults';
+import EventDetail from './pages/EventDetail';
 
 function App() {
   // Access the client ID from environment variables
@@ -28,6 +31,9 @@ function App() {
 	        <Route path="/confirmation-success" element={<ConfirmationSuccess />} />
           <Route path="/allEvents" element={<LandingPage />} />
           <Route path="/add-event" element={<CreateEvent />} />
+          <Route path="/search" element={<Search />} />
+	  <Route path="/search" element={<SearchResults />} />
+	  <Route path="/event/:eventId" element={<EventDetail />} />
         </Routes>
       </Router>
     </GoogleOAuthProvider>

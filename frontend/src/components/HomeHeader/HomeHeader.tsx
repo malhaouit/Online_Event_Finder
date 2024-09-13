@@ -5,12 +5,21 @@ import logo from '../../assets/logo.svg'; // Replace with your actual logo path
 import searchIcon from '../../assets/search-icon.svg';
 import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'react-icons/fa';
 
+type Event = {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+};
+
 function HomeHeader() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]); // Store search results
+  const [searchResults, setSearchResults] = useState<Event[]>([]);
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user')); // Assuming the user info is stored in localStorage
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
 
   // Fetch matching events as the user types
   useEffect(() => {
@@ -32,7 +41,7 @@ function HomeHeader() {
     }
   };
 
-  const handleEventClick = (eventId) => {
+  const handleEventClick = (eventId: string) => {
     navigate(`/event/${eventId}`);
   };
 
@@ -69,7 +78,7 @@ function HomeHeader() {
         />
         {searchResults.length > 0 && (
           <ul className="search-dropdown">
-            {searchResults.map((event) => (
+            {searchResults.map((event: Event) => (
               <li key={event._id} onClick={() => handleEventClick(event._id)}>
                 {event.title}
               </li>

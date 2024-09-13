@@ -1,3 +1,4 @@
+/* Section Wrapper */
 .section-wrapper {
     padding: 25px;
     margin-top: 20px;
@@ -6,6 +7,7 @@
     background-color: transparent;
 }
 
+/* Section Header */
 .section-header h4 {
     font-size: 24px;
     font-weight: bold;
@@ -24,20 +26,20 @@
 
 /* Each event item box */
 .UpcomingEvents-item {
-    flex: 1 0 23%; /* Ensure the items take 23% of the width with space for gaps */
+    flex: 1 0 23%; /* 23% of the width with space for gaps */
     margin-bottom: 20px;
 }
 
 .card-wrapper {
     background-color: white;
     border-radius: 12px;
-    padding: 10px;
+    padding: 15px; /* Added more padding for better spacing */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* Ensure consistent height */
+    height: 100%; /* Consistent height */
 }
 
 .card-wrapper:hover {
@@ -45,20 +47,31 @@
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* Event Image Styling */
 .UpcomingEvents-item-image {
     width: 100%;
     border-radius: 12px;
+    object-fit: cover; /* Ensure image fits within the card */
+    height: 180px; /* Set a fixed height for consistency */
 }
 
+/* Event Content Styling */
 .UpcomingEvents-item-content {
-    margin-top: 10px;
+    margin-top: 15px; /* Adjusted margin for spacing */
     color: black;
 }
 
 .UpcomingEvents-item-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     color: rgb(76, 74, 74);
+}
+
+.UpcomingEvents-item-title span {
+    display: block;
+    font-size: 14px;
+    color: #999;
+    margin-top: 5px;
 }
 
 /* Button Styling */
@@ -70,7 +83,7 @@
 
 .more-events-button {
     padding: 12px 24px;
-    background-color: #12CB44;
+    background-color: #12cb44;
     color: white;
     border: none;
     border-radius: 8px;
@@ -87,12 +100,16 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     .UpcomingEvents-item {
-        flex: 1 0 45%; /* Items will take 45% of the width on medium screens */
+        flex: 1 0 45%; /* Items take 45% of the width on medium screens */
     }
 }
 
 @media (max-width: 480px) {
     .UpcomingEvents-item {
         flex: 1 0 100%; /* Full width on small screens */
+    }
+
+    .UpcomingEvents-item-image {
+        height: 150px; /* Adjust image height for smaller screens */
     }
 }

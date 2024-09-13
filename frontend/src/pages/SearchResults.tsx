@@ -1,14 +1,24 @@
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
+type Event = {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+};
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 function SearchResults() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  // const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
+  // const [error, setError] = useState('');
   const query = useQuery().get('q'); // Get query string from URL
 
   useEffect(() => {
@@ -22,8 +32,12 @@ function SearchResults() {
         }
 
         setEvents(data);
-      } catch (error) {
-        setError(error.message);
+      } catch (error: unknown) {
+	if (error instanceof Error) {
+	  setError(error.message);
+	} else {
+	  setError('An unknown error occurred');
+	}
       } finally {
         setLoading(false);
       }

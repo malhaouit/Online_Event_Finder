@@ -26,7 +26,7 @@ function ForgotPassword() {
       }
     } catch (error) {
       console.error('Error sending reset link:', error);
-      setMessage('Error: Unable to process request.');
+      // setMessage('Error: Unable to process request.');
     }
   };
 

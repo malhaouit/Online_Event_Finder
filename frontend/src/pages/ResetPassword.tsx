@@ -17,7 +17,7 @@ function ResetPassword() {
         body: JSON.stringify({ token, newPassword }),  // Send token and new password to backend
       });
 
-      const data = await response.json();
+      // const data = await response.json();
       if (response.ok) {
 	alert('Password reset successfully!');
         navigate('/login');  // Redirect to login after successful reset

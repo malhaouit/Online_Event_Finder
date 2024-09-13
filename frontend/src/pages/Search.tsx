@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+type Event = {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+};
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 function Search() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
+  // const [events, setEvents] = useState([]);
   const query = useQuery().get('q'); // Get the search query from the URL
 
   useEffect(() => {

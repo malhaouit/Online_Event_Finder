@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLogin';
 import '../styles/SignUp.css';
 import SignUpHeader from '../components/SignUpHeader/SignUpHeader';
@@ -9,7 +9,7 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');  // Add confirm password field
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
@@ -25,7 +25,7 @@ function SignUp() {
       body: JSON.stringify({ name, email, password, confirmPassword }),  // Ensure confirmPassword is included
     });
 
-    const data = await response.json();
+    // const data = await response.json();
     //console.log('Response data:', data);  // Log the backend response
 
     if (response.ok) {

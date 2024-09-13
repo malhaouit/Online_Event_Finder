@@ -1,76 +1,119 @@
-import { Link, useNavigate } from 'react-router-dom';
-import './HomeHeader.css'; // Import the styles for the HomeHeader
-import logo from '../../assets/logo.svg'; // Import your logo file
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom'; // Import `Link` for client-side navigation
+import './HomeHeader.css';
+import logo from '../../assets/logo.svg'; // Replace with your actual logo path
 import searchIcon from '../../assets/search-icon.svg';
 import { FaHome, FaInfoCircle, FaSignInAlt, FaUserPlus, FaCalendarPlus } from 'react-icons/fa';
 
+type Event = {
+  _id: string;
+  title: string;
+  description: string;
+  date: string;
+  location: string;
+};
+
 function HomeHeader() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<Event[]>([]);
   const navigate = useNavigate();
-  const isLoggedIn = !!localStorage.getItem('token'); // Check if the user is logged in
+  const isLoggedIn = !!localStorage.getItem('token');
+  const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
+
+  // Fetch matching events as the user types
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (searchQuery.length > 2) {
+        const response = await fetch(`http://localhost:7999/api/event/search?q=${searchQuery}`);
+        const data = await response.json();
+        setSearchResults(data);
+      } else {
+        setSearchResults([]);
+      }
+    };
+    fetchSearchResults();
+  }, [searchQuery]);
+
+  const handleSearch = () => {
+    if (searchQuery) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleEventClick = (eventId: string) => {
+    navigate(`/event/${eventId}`);
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove the token
-    navigate('/'); // Redirect to home page after logout
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/');
   };
 
   return (
     <header className="home-header">
-      {/* Logo image */}
+      {/* Logo */}
       <div className="home-header-logo">
-        <Link to="/">
+        <a href="/">
           <img src={logo} alt="Online Event Finder" className="header-logo-img" />
-        </Link>
+        </a>
       </div>
 
-      {/* Search Bar */}
+      {/* Search Bar with Icon */}
       <div className="home-header-search">
-	<img src={searchIcon} alt="Search Icon" className="search-icon" />
+        <img
+          src={searchIcon}
+          alt="Search Icon"
+          className="search-icon"
+          onClick={handleSearch}
+        />
         <input
           type="text"
-          placeholder="Search events, profiles..."
+          placeholder="Search events..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           className="search-input"
+          onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         />
+        {searchResults.length > 0 && (
+          <ul className="search-dropdown">
+            {searchResults.map((event: Event) => (
+              <li key={event._id} onClick={() => handleEventClick(event._id)}>
+                {event.title}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Navigation Links */}
       <nav className="home-header-nav">
-      <Link to="/add-event">
-          <div className="nav-icon-text">
-            <FaCalendarPlus />
-            <span>Add Event</span>
-          </div>
+        <Link to="/add-event" title="Add Event">
+          <FaCalendarPlus className="nav-icon" />
         </Link>
-        <Link to="/">
-          <div className="nav-icon-text">
-            <FaHome />
-            <span>Home</span>
-          </div>
+        <Link to="/" title="Home">
+          <FaHome className="nav-icon" />
         </Link>
-        <a href="#about-section">
-          <div className="nav-icon-text">
-            <FaInfoCircle />
-            <span>About</span>
-          </div>
-        </a>
+        <Link to="/about" title="About">
+          <FaInfoCircle className="nav-icon" />
+        </Link>
       </nav>
 
       {/* Authentication Links */}
       <div className="home-header-auth">
         {isLoggedIn ? (
-          <span onClick={handleLogout} className="auth-link">Logout</span>
+          <>
+            <span className="user-info">{user?.name || user?.email}</span>
+            <span onClick={handleLogout} className="auth-link">Logout</span>
+          </>
         ) : (
           <>
-            <Link to="/login" className="auth-link">
-              <div className="nav-icon-text">
-                <FaSignInAlt />
-                <span>Login</span>
-              </div>
+            <Link to="/login" className="auth-link" title="Login">
+              <FaSignInAlt className="nav-icon" />
             </Link>
-            <Link to="/signup" className="auth-link">
-              <div className="nav-icon-text">
-                <FaUserPlus />
-                <span>Sign Up</span>
-              </div>
+            <Link to="/signup" className="auth-link" title="Sign Up">
+              <FaUserPlus className="nav-icon" />
             </Link>
           </>
         )}
@@ -80,4 +123,3 @@ function HomeHeader() {
 }
 
 export default HomeHeader;
-

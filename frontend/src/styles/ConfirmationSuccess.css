@@ -1,0 +1,37 @@
+.confirmation-success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #f9f9f9; /* Light background */
+}
+
+.confirmation-message {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  font-size: 50px;
+  color: #12CB44; /* Green color (same as your login button) */
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  color: #666;
+}
+
+p span {
+  font-weight: bold;
+  color: #12CB44;
+}

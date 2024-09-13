@@ -1,38 +1,37 @@
-/* Overall header styling */
+/* Header container */
 .home-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
-  background-color: #ffffff; /* White background */
-  border-bottom: 1px solid #ddd; /* Light border for header */
-  box-sizing: border-box;
-  position: fixed; /* Fixes the header at the top of the viewport */
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000; /* Ensures the header is above other content */
+  padding: 10px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Logo styling */
 .header-logo-img {
-  height: 50px; /* Adjust the size of your logo as needed */
+  height: 50px;
   cursor: pointer;
 }
 
 /* Search Bar styling */
 .home-header-search {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   background-color: #f1f1f1;
   border-radius: 20px;
   padding: 8px 15px;
+  width: 300px;
 }
 
 .search-icon {
   width: 20px;
   height: 20px;
+  cursor: pointer;
 }
 
 .search-input {
@@ -40,15 +39,40 @@
   background: none;
   outline: none;
   font-size: 16px;
-  width: 300px;
-  padding-left: 10px;
+  width: 100%;
 }
 
 .search-input::placeholder {
   color: #999;
 }
 
-/* Navigation styling */
+/* Dropdown results */
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  z-index: 1000;
+}
+
+.search-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.search-dropdown li:hover {
+  background-color: #f1f1f1;
+}
+
+/* Navigation Links */
 .home-header-nav {
   display: flex;
   gap: 20px;
@@ -56,45 +80,38 @@
 
 .home-header-nav a {
   text-decoration: none;
-  color: #333; /* Dark gray for nav links */
-  font-size: 18px;
+  color: #333;
 }
 
-.home-header-nav a:hover {
-  color: #12CB44; /* Hover effect: green */
+.nav-icon {
+  font-size: 24px;
+  color: #333;
 }
 
-/* Authentication Links (Login, Sign Up) */
+.nav-icon:hover {
+  color: #12CB44;
+}
+
+/* Authentication Links */
 .home-header-auth {
   display: flex;
-  gap: 20px;
+  align-items: center;
 }
 
 .auth-link {
   cursor: pointer;
   font-size: 18px;
-  text-decoration: none;
   color: #333;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+.user-info {
+  font-size: 18px;
+  color: #333;
+  margin-right: 20px;
 }
 
 .auth-link:hover {
-  color: #12CB44; /* Green hover effect */
+  color: #12CB44;
 }
-
-.nav-icon-text {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
- 
-}
-
-.nav-icon-text svg {
-  font-size: 24px;
-  margin-bottom: 5px;
-}
-
-.nav-icon-text span {
-  font-size: 14px;
-}
-

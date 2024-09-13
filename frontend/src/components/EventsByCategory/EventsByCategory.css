@@ -1,17 +1,71 @@
+/* Wrapper for the entire section */
+.section-wrapper {
+    padding: 25px;
+    margin-top: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: transparent;
+}
+
+/* Section Header Styling */
+.section-header h4 {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Container for category items */
 .EventsByCategory-items {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-gap: 20px; /* Space between boxes */
 }
+
+/* Individual category box */
 .EventsByCategory-item {
-    flex: 1 0 15%; /* Each item will take up 20% of the container's width */
- 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.EventsByCategory-item-title{
-    font-size: 15px;
-    line-height: 1rem;
+
+.EventsByCategory-item:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Image inside each category */
+.EventsByCategory-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+/* Title of each category */
+.EventsByCategory-item-title {
+    font-size: 16px;
+    font-weight: bold;
     color: rgb(76, 74, 74);
-    margin-left: 35%;
-  
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .EventsByCategory-items {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .EventsByCategory-items {
+        grid-template-columns: 1fr; /* 1 column on small screens */
+    }
 }

@@ -1,0 +1,22 @@
+.search-results-container {
+  padding: 20px;
+}
+
+.search-result-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+.search-result-item h2 {
+  font-size: 1.5em;
+  color: #333;
+}
+
+.search-result-item p {
+  color: #666;
+}
+
+.search-result-item p:first-of-type {
+  margin-bottom: 5px;
+}

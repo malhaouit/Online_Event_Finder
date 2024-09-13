@@ -29,6 +29,7 @@ router.get(
     scope: ['profile', 'email'], // Request specific scopes here
   })
 );
+router.post('/google', authController.googleLogin);
 
 // Callback route after Google authenticates the user
 router.get(

@@ -3,12 +3,15 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');  // Use the Mongoose model
 const emailService = require('../utils/email');
+const { OAuth2Client } = require('google-auth-library');
 const dotenv = require('dotenv');
 dotenv.config();
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 // Register a new user
 exports.register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
     try {
         console.log('Starting registration process');
@@ -20,6 +23,10 @@ exports.register = async (req, res) => {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
+	// Check if password and confirmPassword match
+	if (password !== confirmPassword) {
+	    return res.status(400).json({ msg: 'Passwords do not match' });
+	}
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -38,8 +45,8 @@ exports.register = async (req, res) => {
         await user.save();
 
 	// Send confirmation email
-	const confirmLink = `${process.env.BASE_URL}/api/auth/confirm/${confirmationToken}`;
-        await emailService.sendConfirmationEmail(email, confirmLink);
+        const confirmLink = `${process.env.FRONTEND_URL}/confirm/${confirmationToken}`;
+	await emailService.sendConfirmationEmail(email, confirmLink);
     } catch (err) {
         console.error('Register error:', err.message);
         res.status(500).send('Server error');
@@ -105,13 +112,69 @@ exports.login = async (req, res) => {
             { expiresIn: '1h' },
             (err, token) => {
                 if (err) throw err;
-                res.json({ token }); // Send token in response
-            }
+                res.json({
+                    token,
+                    user: {
+                      id: user._id,
+                      email: user.email,
+                      name: user.name,
+                    },
+                });             }
         );
     } catch (err) {
         console.error('Error in login controller:', err.message);
         res.status(500).send('Server error in login controller');
     }
+};
+
+exports.googleLogin = async (req, res) => {
+  const { idToken } = req.body;
+
+  try {
+    // Verify the token received from Google
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    // Find or create the user
+    let user = await User.findOne({ email: payload.email });
+    if (!user) {
+      user = new User({
+        googleId: payload.sub,
+        name: payload.name,
+        email: payload.email,
+        isEmailConfirmed: true, // Automatically confirm email for Google logins
+      });
+      await user.save();
+    }
+
+    // Generate JWT token for the user
+    const token = jwt.sign(
+      {
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+        },
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({
+        token,
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+        },
+      });
+  } catch (error) {
+    console.error('Google login error:', error.message);
+    res.status(500).send('Google login error');
+  }
 };
 
 // Send password reset email

@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+const path = require('path');
 const { connectDB } = require('./config/db');
 const passport = require('passport');
 const dotenv = require('dotenv');
@@ -16,7 +17,7 @@ app.use(cors());
 // Route
 app.use('/api/auth', require('./routes/authRoute'));
 app.use('/api/event', require('./routes/eventRoute'));
-
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 const PORT = process.env.PORT;
 

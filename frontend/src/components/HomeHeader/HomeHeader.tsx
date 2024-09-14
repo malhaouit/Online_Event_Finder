@@ -95,9 +95,9 @@ function HomeHeader() {
         <Link to="/" title="Home">
           <FaHome className="nav-icon" />
         </Link>
-        <Link to="/about" title="About">
+        <a href="#about-section" title="About">
           <FaInfoCircle className="nav-icon" />
-        </Link>
+        </a>
       </nav>
 
       {/* Authentication Links */}

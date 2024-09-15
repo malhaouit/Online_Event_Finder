@@ -1,83 +1,110 @@
 /* Container for the entire event details page */
 .event-details {
-  max-width: 800px;
+  max-width: 1200px; /* Full width but limited */
   margin: 50px auto;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Arial', sans-serif;
   color: #333;
 }
 
-/* Event image styling */
+/* Event image styling - Full width */
 .event-image {
-  width: 100%;
+  width: 100%; /* Make the image full width */
   height: auto;
   border-radius: 10px;
   margin-bottom: 20px;
   object-fit: cover;
 }
 
-/* Event title styling */
-.event-details h1 {
-  font-size: 2.5em;
-  color: #333;
-  margin-bottom: 10px;
-  text-align: center;
-  border-bottom: 2px solid #12cb44;
-  padding-bottom: 10px;
-}
-
-/* Event description paragraph */
-.event-details p {
-  font-size: 1.2em;
-  line-height: 1.6;
-  margin: 15px 0;
-}
-
-/* Date and Location information styling */
-.event-details .event-info {
-  margin-top: 20px;
+/* Container for content below the image */
+.event-details-content {
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
-  background-color: #eef6ee;
-  padding: 15px;
-  border-radius: 8px;
+  align-items: flex-start;
+  gap: 20px;
 }
 
-/* Highlight the Date and Location labels */
-.event-details .event-info label {
-  color: #12cb44;
-  font-size: 1.1em;
+/* Left side for event details (title, description, etc.) */
+.event-details-left {
+  flex: 1;
 }
 
-/* For Event Capacity */
-.event-details .capacity {
+/* Right side for registration box */
+.event-details-right {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.2em;
+  text-align: left;
+  position: sticky;
+  top: 20px;
+  width: 300px; /* Limit the width */
+  height: auto; /* Adjust based on content */
+}
+
+/* Event title styling */
+.event-details-left h1 {
+  font-size: 2.5em;
+  color: #333;
+  text-align: left;
+}
+
+/* Event description */
+.event-details-left p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin: 5px 0px 30px 0px;
+}
+
+/* Styling for date, time, location */
+.event-details-left .event-info {
   margin-top: 20px;
-  background-color: #e0f7fa;
-  padding: 10px 15px;
-  border-radius: 8px;
-  text-align: center;
+  color: black;
 }
 
-/* For the button or call to action (if needed) */
-.event-details .cta-button {
-  margin-top: 30px;
+.event-details-left .event-info div {
+  margin-bottom: 30px;
+}
+
+.event-details-left .event-info label {
+  color: black;
+  font-size: 1.3em;
   display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Capacity section */
+.event-details-left .capacity label {
+  margin-top: 20px;
+  font-size: 1.3em;
+  display: block;
+  color: black;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Right-side registration box */
+.event-details-right .admission-box {
+  font-size: 1.0em;
+}
+
+.event-details-right .cta-button {
   width: 100%;
-  padding: 12px;
+  padding: 15px;
   background-color: #12cb44;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1.2em;
-  text-align: center;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.event-details .cta-button:hover {
+.event-details-right .cta-button:hover {
   background-color: #0fa233;
 }

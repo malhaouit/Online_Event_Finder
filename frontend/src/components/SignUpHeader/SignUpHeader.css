@@ -67,3 +67,27 @@
     align-items: center;
     gap: 20px; 
   }
+   /* Responsive Styling */
+   @media (max-width: 768px) {
+    .login-header {
+      flex-direction:column;
+      align-items:center;
+    }
+    .login-header-logo {
+      order: 0; /* Ensure logo is always first */
+    }
+  
+    
+    .Icons-LoginHeader{
+     display:flex;
+      flex-direction:row;
+      justify-content: center;
+      gap: 10px;
+     margin-top: 10px;
+      width: 100%;
+  
+     
+    }
+    
+  
+  }

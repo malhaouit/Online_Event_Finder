@@ -9,7 +9,7 @@ type Event = {
   date: string;
   location: string;
   capacity?: number;
-  image?: string;  // Add the image field to the Event type
+  image?: string;
 };
 
 function EventDetails() {
@@ -62,29 +62,42 @@ function EventDetails() {
 
   return (
     <div className="event-details">
-      {/* Display the event image if available */}
+      {/* Full-width image */}
       {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
-      
-      <h1>{event.title}</h1>
-      <p>{event.description}</p>
 
-      <div className="event-info">
-        <div>
-          <label>Date:</label> {new Date(event.date).toLocaleDateString()}
+      {/* Left and right content below the image */}
+      <div className="event-details-content">
+        {/* Left side - Event Details */}
+        <div className="event-details-left">
+          <h1>{event.title}</h1>
+          <p>{event.description}</p>
+
+          <div className="event-info">
+            <div>
+              <label>Date and time</label>
+              {new Date(event.date).toLocaleDateString()}, {new Date(event.date).toLocaleTimeString()}
+            </div>
+            <div>
+              <label>Location</label>
+              {event.location}
+            </div>
+          </div>
+
+          <div className="capacity">
+            <label>Capacity</label>
+            {event.capacity} Attendees
+          </div>
         </div>
-        <div>
-          <label>Time:</label> {new Date(event.date).toLocaleTimeString()}
-        </div>
-        <div>
-          <label>Location:</label> {event.location}
+
+        {/* Right side - Registration box */}
+        <div className="event-details-right">
+          <div className="admission-box">
+            <h3>General Admission</h3>
+            <p>Free</p>
+          </div>
+          <button className="cta-button">Register for this event</button>
         </div>
       </div>
-
-      <div className="capacity">
-        <label>Capacity:</label> {event.capacity}
-      </div>
-
-      <button className="cta-button">Register for this event</button>
     </div>
   );
 }

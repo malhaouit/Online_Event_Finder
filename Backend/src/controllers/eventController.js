@@ -47,7 +47,7 @@ exports.createEvent = (req, res) => {
             console.error('File upload error:', err);
             return res.status(400).json({ msg: 'File upload error.' });
         } else {
-            const { title, description, date, time, location, image, capacity } = req.body;
+            const { title, description, details, date, time, location, image, capacity } = req.body;
 
             try {
                 const db = getDB();
@@ -62,6 +62,7 @@ exports.createEvent = (req, res) => {
                 const event = new Event({
                     title,
                     description,
+		    details,
                     date,
                     time,
                     location,
@@ -131,7 +132,8 @@ exports.getEventById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const event = await Event.findById(id).populate('organizer', 'name email'); // Optionally populate the organizer details
+        const event = await Event.findById(id).populate('organizer', 'name email').select('title description details date time location image capacity organizer');
+
         if (!event) {
             return res.status(404).json({ msg: 'Event not found' });
 	}

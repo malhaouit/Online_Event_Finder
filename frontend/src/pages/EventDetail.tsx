@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/EventDetails.css';
+import HomeHeader from '../components/HomeHeader/HomeHeader';
 
 type Event = {
   _id: string;
@@ -61,41 +62,46 @@ function EventDetails() {
   }
 
   return (
-    <div className="event-details">
-      {/* Full-width image */}
-      {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
+    <div>
+      {/* Include HomeHeader at the top */}
+      <HomeHeader />
 
-      {/* Left and right content below the image */}
-      <div className="event-details-content">
-        {/* Left side - Event Details */}
-        <div className="event-details-left">
-          <h1>{event.title}</h1>
-          <p>{event.description}</p>
+      <div className="event-details">
+        {/* Full-width image */}
+        {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
 
-          <div className="event-info">
-            <div>
-              <label>Date and time</label>
-              {new Date(event.date).toLocaleDateString()}, {new Date(event.date).toLocaleTimeString()}
+        {/* Left and right content below the image */}
+        <div className="event-details-content">
+          {/* Left side - Event Details */}
+          <div className="event-details-left">
+            <h1>{event.title}</h1>
+            <p>{event.description}</p>
+
+            <div className="event-info">
+              <div>
+                <label>Date and time</label>
+                {new Date(event.date).toLocaleDateString()}, {new Date(event.date).toLocaleTimeString()}
+              </div>
+              <div>
+                <label>Location</label>
+                {event.location}
+              </div>
             </div>
-            <div>
-              <label>Location</label>
-              {event.location}
+
+            <div className="capacity">
+              <label>Capacity</label>
+              {event.capacity} Attendees
             </div>
           </div>
 
-          <div className="capacity">
-            <label>Capacity</label>
-            {event.capacity} Attendees
+          {/* Right side - Registration box */}
+          <div className="event-details-right">
+            <div className="admission-box">
+              <h3>General Admission</h3>
+              <p>Free</p>
+            </div>
+            <button className="cta-button">Register for this event</button>
           </div>
-        </div>
-
-        {/* Right side - Registration box */}
-        <div className="event-details-right">
-          <div className="admission-box">
-            <h3>General Admission</h3>
-            <p>Free</p>
-          </div>
-          <button className="cta-button">Register for this event</button>
         </div>
       </div>
     </div>

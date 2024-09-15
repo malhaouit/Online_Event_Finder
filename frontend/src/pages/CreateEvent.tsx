@@ -5,6 +5,7 @@ import '../styles/CreateEvent.css'; // Importing the styles from the separate CS
 const CreateEvent = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [details, setDetails] = useState('');
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [location, setLocation] = useState('');
@@ -25,6 +26,7 @@ const CreateEvent = () => {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
+    formData.append('details', details);
     formData.append('date', date);
     formData.append('time', time);
     formData.append('location', location);
@@ -67,11 +69,17 @@ const CreateEvent = () => {
           required
         />
         <textarea
-          placeholder="Description"
+          placeholder="Short Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
+	<textarea
+	  placeholder="Detailed Description"
+          value={details}
+          onChange={(e) => setDetails(e.target.value)}
+          required
+	/>
         <input
           type="date"
           value={date}

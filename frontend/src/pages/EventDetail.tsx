@@ -7,10 +7,12 @@ type Event = {
   _id: string;
   title: string;
   description: string;
+  details?: string;
   date: string;
   location: string;
   capacity?: number;
   image?: string;
+  organizer: { name: string; email: string };
 };
 
 function EventDetails() {
@@ -77,21 +79,36 @@ function EventDetails() {
             <h1>{event.title}</h1>
             <p>{event.description}</p>
 
+            {/* Display the event details field */}
+	    {event.details && (
+	      <div className="event-details-long">
+		<label>Event Details</label>
+		<p>{event.details}</p>
+	      </div>
+	    )}
+
             <div className="event-info">
               <div>
                 <label>Date and time</label>
-                {new Date(event.date).toLocaleDateString()}, {new Date(event.date).toLocaleTimeString()}
+                <p>{new Date(event.date).toLocaleDateString()}, {new Date(event.date).toLocaleTimeString()}</p>
               </div>
               <div>
                 <label>Location</label>
-                {event.location}
+                <p>{event.location}</p>
               </div>
             </div>
 
             <div className="capacity">
               <label>Capacity</label>
-              {event.capacity} Attendees
+              <p>{event.capacity} Attendees</p>
             </div>
+
+	    {/* Display the organizer */}
+	    <div className="organizer-info">
+	      <label>Organizer</label>
+	      <p>{event.organizer.name}</p>
+	      <p>{event.organizer.email}</p>
+	    </div>
           </div>
 
           {/* Right side - Registration box */}

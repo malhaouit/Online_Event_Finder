@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import '../styles/CreateEvent.css'; // Importing the styles from the separate CSS file
 
 const CreateEvent = () => {
@@ -68,18 +70,24 @@ const CreateEvent = () => {
           onChange={(e) => setTitle(e.target.value)}
           required
         />
-        <textarea
-          placeholder="Short Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-	<textarea
-	  placeholder="Detailed Description"
-          value={details}
-          onChange={(e) => setDetails(e.target.value)}
-          required
-	/>
+        <div className="quill-container">
+          <label htmlFor="event-description">Short Description</label>
+          <ReactQuill
+            id="event-description"
+            value={description}
+            onChange={setDescription}
+            theme="snow"
+          />
+        </div>
+        <div className="quill-container">
+          <label htmlFor="event-details">Detailed Description</label>
+          <ReactQuill
+            id="event-details"
+            value={details}
+            onChange={setDetails}
+            theme="snow"
+          />
+        </div>
         <input
           type="date"
           value={date}

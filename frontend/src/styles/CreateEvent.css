@@ -69,3 +69,17 @@
     padding: 6px 12px;
   }
 }
+.quill-container {
+  margin-bottom: 15px;
+}
+
+.quill-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.quill-container .ql-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

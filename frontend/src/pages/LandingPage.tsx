@@ -1,19 +1,29 @@
-// src/pages/LandingPage.tsx
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import '../styles/LandingPage.css';
 
 interface Event {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   date: string;
+  location: string;
+  image?: string;
+}
+
+interface PaginatedEvents {
+  events: Event[];
+  currentPage: number;
+  totalPages: number;
+  totalEvents: number;
 }
 
 function LandingPage() {
   const [user, setUser] = useState<{ name: string } | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [paginatedEvents, setPaginatedEvents] = useState<PaginatedEvents | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,30 +37,57 @@ function LandingPage() {
       }
     }
 
-    const fetchEvents = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:7999/api/event/allEvents', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+    fetchEvents(currentPage);
+  }, [currentPage]);
 
-        if (response.ok) {
-          const data = await response.json();
-          setEvents(data);
-        } else {
-          console.error('Failed to fetch events:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error fetching events:', error);
+  const fetchEvents = async (page: number) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:7999/api/event/allEvents?page=${page}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPaginatedEvents(data);
+      } else {
+        console.error('Failed to fetch events:', response.statusText);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching events:', error);
+    }
+  };
 
-    fetchEvents();
-  }, []);
+  const handleSearch = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:7999/api/event/search?q=${searchQuery}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setPaginatedEvents({
+          events: data,
+          currentPage: 1,
+          totalPages: 1,
+          totalEvents: data.length
+        });
+      } else {
+        console.error('Failed to search events:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error searching events:', error);
+    }
+  };
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -62,6 +99,10 @@ function LandingPage() {
     navigate('/');
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div className="landing-page">
       <header className="landing-header">
@@ -69,7 +110,7 @@ function LandingPage() {
           {user && <span className="welcome-message">Hello, {user.name}!</span>}
         </div>
         <nav className="landing-nav">
-          <a href="/add-event">Add Event</a>
+          <Link to="/add-event">Add Event</Link>
         </nav>
         <div className="user-info">
           {user && (
@@ -80,7 +121,6 @@ function LandingPage() {
               {dropdownOpen && (
                 <div className="dropdown-menu">
                   <button onClick={handleLogout}>Logout</button>
-                  {/* Future buttons like Profile Settings will go here */}
                 </div>
               )}
             </div>
@@ -90,15 +130,48 @@ function LandingPage() {
       <div className="landing-content">
         <h1>Welcome to the Events Platform</h1>
         <p>Find and manage your events all in one place!</p>
+        <div className="search-bar">
+          <input
+            type="text"
+            placeholder="Search events..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button onClick={handleSearch}>Search</button>
+        </div>
         <div className="events-list">
-          {events.length > 0 ? (
-            events.map((event) => (
-              <div key={event.id} className="event-item">
-                <h2>{event.title}</h2>
-                <p>{event.description}</p>
-                <p>Date: {event.date}</p>
+          {paginatedEvents && paginatedEvents.events.length > 0 ? (
+            <>
+              {paginatedEvents.events.map((event) => (
+                <div key={event._id} className="event-item">
+                  {event.image && (
+                    <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />
+                  )}
+                  <div className="event-details">
+                    <h2>{event.title}</h2>
+                    <p>{event.description}</p>
+                    <p>Date: {new Date(event.date).toLocaleDateString()}</p>
+                    <p>Location: {event.location}</p>
+                    <Link to={`/event/${event._id}`} className="view-details-btn">View Details</Link>
+                  </div>
+                </div>
+              ))}
+              <div className="pagination">
+                <button 
+                  onClick={() => handlePageChange(currentPage - 1)} 
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+                <span>{currentPage} of {paginatedEvents.totalPages}</span>
+                <button 
+                  onClick={() => handlePageChange(currentPage + 1)} 
+                  disabled={currentPage === paginatedEvents.totalPages}
+                >
+                  Next
+                </button>
               </div>
-            ))
+            </>
           ) : (
             <p>No events available.</p>
           )}

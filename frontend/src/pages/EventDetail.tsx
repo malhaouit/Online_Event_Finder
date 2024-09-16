@@ -13,7 +13,7 @@ type Event = {
   capacity?: number;
   image?: string;
   organizer: { name: string; email: string };
-  isRegistered: boolean; // Add this field to track registration status
+  isRegistered: boolean;
 };
 
 function EventDetails() {
@@ -23,7 +23,6 @@ function EventDetails() {
   const [error, setError] = useState('');
   const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState('');
-  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     const fetchEventDetails = async () => {
@@ -34,14 +33,19 @@ function EventDetails() {
           return;
         }
 
-        const response = await fetch(`http://localhost:7999/api/event/${eventId}`);
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:7999/api/event/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (!response.ok) {
           throw new Error('Failed to fetch event details');
         }
 
         const data = await response.json();
         setEvent(data);
-        setIsRegistered(data.isRegistered); // Set registration status
         setLoading(false);
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -81,7 +85,7 @@ function EventDetails() {
       }
 
       setRegisterSuccess('Successfully registered for the event.');
-      setIsRegistered(true); // Update registration status
+      setEvent(prev => prev ? { ...prev, isRegistered: true } : null);
     } catch (err) {
       setRegisterError('An error occurred while registering.');
     }
@@ -112,7 +116,7 @@ function EventDetails() {
       }
 
       setRegisterSuccess('Successfully canceled your registration.');
-      setIsRegistered(false); // Update registration status
+      setEvent(prev => prev ? { ...prev, isRegistered: false } : null);
     } catch (err) {
       setRegisterError('An error occurred while canceling registration.');
     }
@@ -177,7 +181,7 @@ function EventDetails() {
               <h3>General Admission</h3>
               <p>Free</p>
             </div>
-            {isRegistered ? (
+            {event.isRegistered ? (
               <button className="cta-button" onClick={handleUnregister}>Cancel Registration</button>
             ) : (
               <button className="cta-button" onClick={handleRegister}>Register for this event</button>

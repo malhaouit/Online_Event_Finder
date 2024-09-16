@@ -39,3 +39,33 @@
     background-color: #218838;
   }
   
+  /* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .create-event-container {
+    padding: 15px;
+  }
+
+  .create-event-form input,
+  .create-event-form textarea {
+    padding: 8px;
+  }
+
+  .submit-button {
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .create-event-container {
+    padding: 10px;
+  }
+
+  .create-event-form input,
+  .create-event-form textarea {
+    padding: 6px;
+  }
+
+  .submit-button {
+    padding: 6px 12px;
+  }
+}

@@ -17,3 +17,25 @@
     object-fit:fill; /* Ensures the image covers the container */
     border-radius: 15px;
   }
+  /* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .hero-main {
+    height: 300px; /* Adjust height for smaller screens */
+    border-radius: 10px; /* Adjust border radius as needed */
+  }
+
+  .hero-image {
+    border-radius: 10px; /* Match the container border radius */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-main {
+    height: 200px; /* Adjust height for mobile screens */
+    border-radius: 5px; /* Adjust border radius as needed */
+  }
+
+  .hero-image {
+    border-radius: 5px; /* Match the container border radius */
+  }
+}

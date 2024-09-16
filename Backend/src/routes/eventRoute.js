@@ -14,4 +14,8 @@ router.get('/search', eventController.searchEvents);
 
 router.get('/:id', eventController.getEventById);
 
+router.post('/:id/register', authMiddleware('jwt'), eventController.registerForEvent);
+
+router.post('/:id/unregister', authMiddleware('jwt'), eventController.cancelRegistration);
+
 module.exports = router;

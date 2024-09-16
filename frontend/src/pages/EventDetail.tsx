@@ -13,6 +13,7 @@ type Event = {
   capacity?: number;
   image?: string;
   organizer: { name: string; email: string };
+  isRegistered: boolean; // Add this field to track registration status
 };
 
 function EventDetails() {
@@ -20,6 +21,9 @@ function EventDetails() {
   const [event, setEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [registerError, setRegisterError] = useState('');
+  const [registerSuccess, setRegisterSuccess] = useState('');
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     const fetchEventDetails = async () => {
@@ -37,6 +41,7 @@ function EventDetails() {
 
         const data = await response.json();
         setEvent(data);
+        setIsRegistered(data.isRegistered); // Set registration status
         setLoading(false);
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -50,6 +55,68 @@ function EventDetails() {
 
     fetchEventDetails();
   }, [eventId]);
+
+  const handleRegister = async () => {
+    setRegisterError('');
+    setRegisterSuccess('');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      setRegisterError('You must be logged in to register.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:7999/api/event/${eventId}/register`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setRegisterError(data.msg || 'Failed to register for the event');
+        return;
+      }
+
+      setRegisterSuccess('Successfully registered for the event.');
+      setIsRegistered(true); // Update registration status
+    } catch (err) {
+      setRegisterError('An error occurred while registering.');
+    }
+  };
+
+  const handleUnregister = async () => {
+    setRegisterError('');
+    setRegisterSuccess('');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      setRegisterError('You must be logged in to cancel registration.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:7999/api/event/${eventId}/unregister`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setRegisterError(data.msg || 'Failed to cancel registration');
+        return;
+      }
+
+      setRegisterSuccess('Successfully canceled your registration.');
+      setIsRegistered(false); // Update registration status
+    } catch (err) {
+      setRegisterError('An error occurred while canceling registration.');
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -65,27 +132,22 @@ function EventDetails() {
 
   return (
     <div>
-      {/* Include HomeHeader at the top */}
       <HomeHeader />
 
       <div className="event-details">
-        {/* Full-width image */}
         {event.image && <img src={`http://localhost:7999/${event.image}`} alt={event.title} className="event-image" />}
 
-        {/* Left and right content below the image */}
         <div className="event-details-content">
-          {/* Left side - Event Details */}
           <div className="event-details-left">
             <h1>{event.title}</h1>
             <p>{event.description}</p>
 
-            {/* Display the event details field */}
-	    {event.details && (
-	      <div className="event-details-long">
-		<label>Event Details</label>
-		<p>{event.details}</p>
-	      </div>
-	    )}
+            {event.details && (
+              <div className="event-details-long">
+                <label>Event Details</label>
+                <p>{event.details}</p>
+              </div>
+            )}
 
             <div className="event-info">
               <div>
@@ -103,21 +165,25 @@ function EventDetails() {
               <p>{event.capacity} Attendees</p>
             </div>
 
-	    {/* Display the organizer */}
-	    <div className="organizer-info">
-	      <label>Organizer</label>
-	      <p>{event.organizer.name}</p>
-	      <p>{event.organizer.email}</p>
-	    </div>
+            <div className="organizer-info">
+              <label>Organizer</label>
+              <p>{event.organizer.name}</p>
+              <p>{event.organizer.email}</p>
+            </div>
           </div>
 
-          {/* Right side - Registration box */}
           <div className="event-details-right">
             <div className="admission-box">
               <h3>General Admission</h3>
               <p>Free</p>
             </div>
-            <button className="cta-button">Register for this event</button>
+            {isRegistered ? (
+              <button className="cta-button" onClick={handleUnregister}>Cancel Registration</button>
+            ) : (
+              <button className="cta-button" onClick={handleRegister}>Register for this event</button>
+            )}
+            {registerError && <p className="error">{registerError}</p>}
+            {registerSuccess && <p className="success">{registerSuccess}</p>}
           </div>
         </div>
       </div>

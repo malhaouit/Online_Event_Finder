@@ -137,9 +137,77 @@ exports.getEventById = async (req, res) => {
         if (!event) {
             return res.status(404).json({ msg: 'Event not found' });
 	}
-        res.json(event);
+
+	// Check if the user is registered for the event
+        const isRegistered = Array.isArray(event.registeredUsers) && event.registeredUsers.some(user => user.toString() === userId);
+
+	// Add the `isRegistered` field to the event data
+	const eventWithRegistrationStatus = {
+	    ...event._doc,  // Spread the original event document
+	    isRegistered    // Add the dynamic field
+	};
+
+        res.json(eventWithRegistrationStatus);
     } catch (err) {
 	console.error('Error fetching event details:', err.message);
         res.status(500).send('Server error');
+    }
+};
+
+exports.registerForEvent = async (req, res) => {
+    try {
+        const { id } = req.params;  // Event ID from URL
+        const userId = req.user.id;  // Current logged-in user
+    
+        const event = await Event.findById(id);
+
+	if (!event) {
+	    return res.status(404).json({ msg: 'Event not found' });
+	}
+    
+	// Check if the user is already registered
+	if (event.registeredUsers.includes(userId)) {
+	    return res.status(400).json({ msg: 'You have already registered for this event.' });
+	}
+
+	// Check if the event has available capacity
+	if (event.registeredUsers.length >= event.capacity) {
+	    return res.status(400).json({ msg: 'This event is fully booked.' });
+	}
+
+	// Register the user
+	event.registeredUsers.push(userId);
+	await event.save();
+
+	return res.json({ msg: 'Successfully registered for the event.' });
+    } catch (err) {
+	console.error(err.message);
+	return res.status(500).send('Server error');
+    }
+};
+
+exports.cancelRegistration = async (req, res) => {
+    const { id } = req.params; // event ID
+    const userId = req.user.id; // get user ID from authenticated request
+
+    try {
+	const event = await Event.findById(id);
+	if (!event) {
+	    return res.status(404).json({ msg: 'Event not found' });
+	}
+
+	// Check if the user is registered for the event
+	if (!event.registeredUsers.includes(userId)) {
+            return res.status(400).json({ msg: 'You are not registered for this event' });
+	}
+
+	// Remove the user from the registeredUsers list
+	event.registeredUsers = event.registeredUsers.filter(user => user.toString() !== userId);
+	await event.save();
+	
+	res.json({ msg: 'Successfully canceled registration' });
+    } catch (err) {
+	console.error(err.message);
+	res.status(500).send('Server error');
     }
 };

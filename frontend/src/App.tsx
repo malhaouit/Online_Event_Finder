@@ -12,6 +12,7 @@ import CreateEvent from './pages/CreateEvent';
 import Search from './pages/Search';
 import SearchResults from './pages/SearchResults';
 import EventDetail from './pages/EventDetail';
+import MyEvents from './pages/MyEvents';
 
 function App() {
   // Access the client ID from environment variables
@@ -32,8 +33,10 @@ function App() {
           <Route path="/allEvents" element={<LandingPage />} />
           <Route path="/add-event" element={<CreateEvent />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/me" element={<MyEvents />} />
 	  <Route path="/search" element={<SearchResults />} />
 	  <Route path="/event/:eventId" element={<EventDetail />} />
+
         </Routes>
       </Router>
     </GoogleOAuthProvider>

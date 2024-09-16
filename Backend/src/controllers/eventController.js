@@ -228,3 +228,58 @@ exports.cancelRegistration = async (req, res) => {
 	res.status(500).send('Server error');
     }
 };
+
+exports.getUserEvents = async (req, res) => {
+    try {
+        const userId = req.user.id;  // Get the current logged-in user
+        const page = parseInt(req.query.page) || 1;  // Handle pagination
+        const limit = parseInt(req.query.limit) || 10;  // Default limit is 10
+        const skip = (page - 1) * limit;
+
+        // Fetch events created by the user
+        const events = await Event.find({ organizer: userId })
+            .skip(skip)
+            .limit(limit)
+            .populate('registeredUsers');  // Populate registered users to get the count
+
+        const totalEvents = await Event.countDocuments({ organizer: userId });
+        const totalPages = Math.ceil(totalEvents / limit);
+
+        res.json({
+            events,
+            currentPage: page,
+            totalPages,
+            totalEvents,
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
+
+exports.getRegisteredEvents = async (req, res) => {
+    try {
+        const userId = req.user.id;  // Get the current logged-in user
+        const page = parseInt(req.query.page) || 1;  // Handle pagination
+        const limit = parseInt(req.query.limit) || 10;  // Default limit is 10
+        const skip = (page - 1) * limit;
+
+        // Fetch events where the user is registered
+        const events = await Event.find({ registeredUsers: userId })
+            .skip(skip)
+            .limit(limit);
+
+        const totalEvents = await Event.countDocuments({ registeredUsers: userId });
+        const totalPages = Math.ceil(totalEvents / limit);
+
+        res.json({
+            events,
+            currentPage: page,
+            totalPages,
+            totalEvents,
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};

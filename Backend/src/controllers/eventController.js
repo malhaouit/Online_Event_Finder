@@ -147,16 +147,19 @@ exports.searchEvents = async (req, res) => {
 // Fetch event details by ID
 exports.getEventById = async (req, res) => {
     const { id } = req.params;
-
+    
     try {
-        const event = await Event.findById(id).populate('organizer', 'name email').select('title description details date time location image capacity organizer');
+        const event = await Event.findById(id).populate('organizer', 'name email').select('title description details date time location image capacity organizer registeredUsers');
 
         if (!event) {
             return res.status(404).json({ msg: 'Event not found' });
 	}
 
+	// Check if the user is logged in
+	const userId = req.user ? req.user.id : null;
+
 	// Check if the user is registered for the event
-        const isRegistered = Array.isArray(event.registeredUsers) && event.registeredUsers.some(user => user.toString() === userId);
+        const isRegistered = userId && Array.isArray(event.registeredUsers) ? event.registeredUsers.some(user => user.toString() === userId): false;
 
 	// Add the `isRegistered` field to the event data
 	const eventWithRegistrationStatus = {

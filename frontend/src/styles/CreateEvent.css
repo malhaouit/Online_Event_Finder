@@ -1,5 +1,5 @@
 .create-event-container {
-    max-width: 40%;
+    max-width: 600px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -68,18 +68,4 @@
   .submit-button {
     padding: 6px 12px;
   }
-}
-.quill-container {
-  margin-bottom: 15px;
-}
-
-.quill-container label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.quill-container .ql-container {
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }

@@ -60,6 +60,15 @@ const CreateEvent = () => {
     }
   };
 
+  const quillModules = {
+    toolbar: [
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['bold', 'italic', 'underline', 'blockquote', 'link'],
+      [{ 'color': [] }], // Allow colors
+      ['clean']
+    ],
+  };
+
   return (
     <>  
     <HomeHeader /> 
@@ -81,6 +90,7 @@ const CreateEvent = () => {
             value={description}
             onChange={setDescription}
             theme="snow"
+            modules={quillModules}
           />
         </div>
         <div className="quill-container">
@@ -90,6 +100,7 @@ const CreateEvent = () => {
             value={details}
             onChange={setDetails}
             theme="snow"
+            modules={quillModules}
           />
         </div>
         <input

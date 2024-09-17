@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import '../styles/CreateEvent.css'; // Importing the styles from the separate CSS file
+import { HomeHeader } from '../components';
+import Footer from '../components/Footer/Footer';
 
 const CreateEvent = () => {
   const [title, setTitle] = useState('');
@@ -59,7 +61,9 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="create-event-container">
+    <>  
+    <HomeHeader /> 
+     <div className="create-event-container">
       <h2>Create a New Event</h2>
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit} className="create-event-form">
@@ -124,6 +128,9 @@ const CreateEvent = () => {
         </button>
       </form>
     </div>
+    <Footer />
+    </>
+
   );
 };
 

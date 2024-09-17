@@ -144,12 +144,13 @@ function EventDetails() {
         <div className="event-details-content">
           <div className="event-details-left">
             <h1>{event.title}</h1>
-            <p>{event.description}</p>
+            {/* Render the description and details using dangerouslySetInnerHTML */}
+            <p dangerouslySetInnerHTML={{ __html: event.description }}></p>
 
             {event.details && (
               <div className="event-details-long">
                 <label>Event Details</label>
-                <p>{event.details}</p>
+                <p dangerouslySetInnerHTML={{ __html: event.details }}></p>
               </div>
             )}
 

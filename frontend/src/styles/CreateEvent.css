@@ -1,45 +1,74 @@
 .create-event-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .create-event-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .create-event-form input,
-  .create-event-form textarea {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .error {
-    color: red;
-    margin-bottom: 10px;
-  }
-  
-  .submit-button {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .submit-button:hover {
-    background-color: #218838;
-  }
-  
-  /* Media Queries for Responsiveness */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.create-event-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-event-form input,
+.create-event-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.submit-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #218838;
+}
+
+/* Quill editor content default styling */
+.quill-container {
+  margin-bottom: 15px;
+}
+
+.quill-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.quill-container .ql-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.ql-editor {
+  font-size: 1.1em; /* Ensure the default text size matches EventDetails */
+  font-weight: normal; /* Ensure text is not bold by default */
+  color: #333; /* Match content color */
+}
+
+.ql-editor p {
+  margin: 0;
+  font-size: 1.1em; /* Match paragraph size with EventDetails */
+  font-weight: normal; /* Default font weight */
+  line-height: 1.6;
+}
+
+/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .create-event-container {
     padding: 15px;
@@ -68,18 +97,4 @@
   .submit-button {
     padding: 6px 12px;
   }
-}
-.quill-container {
-  margin-bottom: 15px;
-}
-
-.quill-container label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.quill-container .ql-container {
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }

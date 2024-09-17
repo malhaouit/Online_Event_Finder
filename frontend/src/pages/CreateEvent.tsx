@@ -58,6 +58,15 @@ const CreateEvent = () => {
     }
   };
 
+  const quillModules = {
+    toolbar: [
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['bold', 'italic', 'underline', 'blockquote', 'link'],
+      [{ 'color': [] }], // Allow colors
+      ['clean']
+    ],
+  };
+
   return (
     <div className="create-event-container">
       <h2>Create a New Event</h2>
@@ -77,6 +86,7 @@ const CreateEvent = () => {
             value={description}
             onChange={setDescription}
             theme="snow"
+            modules={quillModules}
           />
         </div>
         <div className="quill-container">
@@ -86,6 +96,7 @@ const CreateEvent = () => {
             value={details}
             onChange={setDetails}
             theme="snow"
+            modules={quillModules}
           />
         </div>
         <input

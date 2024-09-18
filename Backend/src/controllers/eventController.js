@@ -149,7 +149,7 @@ exports.getEventById = async (req, res) => {
     const { id } = req.params;
     
     try {
-        const event = await Event.findById(id).populate('organizer', 'name email').select('title description details date time location image capacity organizer registeredUsers');
+        const event = await Event.findById(id).populate('organizer', 'name email profileImage').select('title description details date time location image capacity organizer registeredUsers');
 
         if (!event) {
             return res.status(404).json({ msg: 'Event not found' });
@@ -305,3 +305,48 @@ exports.getRegisteredEvents = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+
+// Update event by ID, including image upload
+exports.updateEvent = (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ msg: 'Image size should be less than 1MB.' });
+        }
+        return res.status(400).json({ msg: 'File upload error.' });
+      }
+  
+      const { title, description, details, date, time, location, capacity } = req.body;
+      const eventId = req.params.id;
+  
+      try {
+        const event = await Event.findById(eventId);
+  
+        if (!event) {
+          return res.status(404).json({ msg: 'Event not found' });
+        }
+  
+        // Update fields with new data
+        event.title = title || event.title;
+        event.description = description || event.description;
+        event.details = details || event.details;
+        event.date = date || event.date;
+        event.time = time || event.time;
+        event.location = location || event.location;
+        event.capacity = capacity || event.capacity;
+  
+        // If a new image is uploaded, update the image field
+        if (req.file) {
+          event.image = `uploads/${req.file.filename}`;
+        }
+  
+        // Save the updated event
+        const updatedEvent = await event.save();
+  
+        res.json(updatedEvent);
+      } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+      }
+    });
+  };  

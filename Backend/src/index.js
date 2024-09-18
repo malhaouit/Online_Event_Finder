@@ -20,6 +20,9 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 // Routes
 app.use('/api/auth', require('./routes/authRoute'));
 app.use('/api/event', require('./routes/eventRoute'));
+app.use('/api/profile', require('./routes/profileRoute'));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 
 const PORT = process.env.PORT;
 

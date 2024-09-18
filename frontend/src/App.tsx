@@ -12,7 +12,9 @@ import CreateEvent from './pages/CreateEvent';
 import Search from './pages/Search';
 import SearchResults from './pages/SearchResults';
 import EventDetail from './pages/EventDetail';
+import ProfilePage from './pages/ProfilePage';
 import MyEvents from './pages/MyEvents';
+import UpdateEvent from './pages/UpdateEvent';
 
 function App() {
   // Access the client ID from environment variables
@@ -36,6 +38,8 @@ function App() {
           <Route path="/me" element={<MyEvents />} />
 	  <Route path="/search" element={<SearchResults />} />
 	  <Route path="/event/:eventId" element={<EventDetail />} />
+    <Route path="/profile/:userId" element={<ProfilePage />} />
+    <Route path="/update-event/:eventId" element={<UpdateEvent />} />
 
         </Routes>
       </Router>

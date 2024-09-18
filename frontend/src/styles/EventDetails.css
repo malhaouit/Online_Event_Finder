@@ -6,7 +6,7 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
+  font-family: Georgia, Times, 'Times New Roman', serif;
   color: #333;
 }
 
@@ -24,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  gap: 30px;
 }
 
 /* Left side for event details (title, description, etc.) */
@@ -33,15 +33,16 @@
 }
 
 .event-details-left .event-details-long {
-  margin-top: 30px;
+  margin-top: 60px;
 }
 
 .event-details-left .event-details-long label {
   color: black;
-  font-size: 1.3em;
+  font-size: 1.4em;
   display: block;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  font-family: Georgia, Times, 'Times New Roman', serif;
 }
 
 /* Organizer section */
@@ -49,7 +50,7 @@
   margin-top: 20px;
 }
 
-.organizer-info label {
+/* .organizer-info label {
   color: black;
   font-size: 1.3em;
   display: block;
@@ -60,7 +61,7 @@
 .organizer-info p {
   font-size: 1.1em;
   margin: 0;
-}
+} */
 
 /* Right side for registration box */
 .event-details-right {
@@ -78,44 +79,45 @@
 
 /* Event title styling */
 .event-details-left h1 {
-  font-size: 2.5em;
+  font-size: 3em;
   color: #333;
   text-align: left;
 }
 
 /* Event description */
 .event-details-left p {
-  font-size: 1.1em;
+  font-size: 1em;
   line-height: 1.6;
   margin: 0px;
 }
 
 /* Styling for date, time, location */
 .event-details-left .event-info {
-  margin-top: 30px;
+  margin-top: 40px;
   color: black;
 }
 
 .event-details-left .event-info div {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
 }
 
 .event-details-left .event-info label {
   color: black;
-  font-size: 1.3em;
+  font-size: 1.4em;
   display: block;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  font-family: Georgia, Times, 'Times New Roman', serif;
 }
 
 /* Capacity section */
 .event-details-left .capacity label {
   margin-top: 20px;
-  font-size: 1.3em;
+  font-size: 1.4em;
   display: block;
   color: black;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 /* Right-side registration box */
@@ -133,9 +135,64 @@
   font-size: 1.2em;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: Georgia, Times, 'Times New Roman', serif;
 }
 
 .event-details-right .cta-button:hover {
+  background-color: #0fa233;
+}
+
+/* Organizer Section Styling */
+.organizer-container {
+  margin-top: 50px;
+}
+
+.organizer-label {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.organizer-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.small-profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.organizer-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.organizer-details h3 {
+  margin: 0;
+  font-size: 1.2em;
+  color: #5c0086;
+  font-weight: normal;
+  font-family: Impact, 'Arial Narrow Bold', sans-serif;
+}
+
+.view-profile-button {
+  margin-top: 5px;
+  padding: 5px 8px;
+  font-size: 0.9em;
+  background-color: #12cb44;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: Georgia, Times, 'Times New Roman', serif;
+}
+
+.view-profile-button:hover {
   background-color: #0fa233;
 }
 

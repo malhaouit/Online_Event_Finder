@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
-import '../styles/CreateEvent.css'; // Importing the styles from the separate CSS file
-import { HomeHeader } from '../components';
-import Footer from '../components/Footer/Footer';
+import 'react-quill/dist/quill.snow.css';
+import '../styles/CreateEvent.css';
 
-const CreateEvent = () => {
+function UpdateEvent() {
+  const { eventId } = useParams<{ eventId: string }>();
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [details, setDetails] = useState('');
+  const [description, setDescription] = useState(''); // HTML content for short description
+  const [details, setDetails] = useState(''); // HTML content for detailed description
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [location, setLocation] = useState('');
@@ -18,62 +17,77 @@ const CreateEvent = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchEventDetails = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:7999/api/event/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setTitle(data.title);
+        setDescription(data.description); // Set the HTML content
+        setDetails(data.details); // Set the HTML content for details
+        setDate(data.date.split('T')[0]); // Parse date to 'YYYY-MM-DD' format
+        setTime(data.time);
+        setLocation(data.location);
+        setCapacity(data.capacity);
+      } catch (err) {
+        console.error('Error fetching event details:', err);
+        setError('Failed to fetch event details');
+      }
+    };
+
+    fetchEventDetails();
+  }, [eventId]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
 
     if (!token) {
-      setError('You must be logged in to create an event.');
+      setError('You must be logged in to update the event.');
       return;
     }
 
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('description', description);
-    formData.append('details', details);
+    formData.append('description', description); // Save HTML content
+    formData.append('details', details); // Save HTML content for details
     formData.append('date', date);
     formData.append('time', time);
     formData.append('location', location);
     formData.append('capacity', capacity);
     if (image) {
-      formData.append('image', image);
+      formData.append('image', image); // Only append image if one was selected
     }
 
     try {
-      const response = await fetch('http://localhost:7999/api/event/create', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:7999/api/event/${eventId}`, {
+        method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
+        body: formData, // Send form data including file if present
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.msg || 'Failed to create event');
+        setError(errorData.msg || 'Failed to update event');
         return;
       }
 
-      navigate('/allEvents'); // Redirect to the landing page after successful event creation
+      navigate(`/event/${eventId}`); // Redirect to event details page after updating
     } catch (err) {
-      setError('Error occurred while creating the event.');
+      setError('Error occurred while updating the event.');
     }
   };
 
-  const quillModules = {
-    toolbar: [
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      ['bold', 'italic', 'underline', 'blockquote', 'link'],
-      [{ 'color': [] }], // Allow colors
-      ['clean']
-    ],
-  };
-
   return (
-    <>  
-    <HomeHeader /> 
-     <div className="create-event-container">
-      <h2>Create a New Event</h2>
+    <div className="create-event-container">
+      <h2>Update Event</h2>
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleSubmit} className="create-event-form">
         <input
@@ -84,23 +98,19 @@ const CreateEvent = () => {
           required
         />
         <div className="quill-container">
-          <label htmlFor="event-description">Short Description</label>
+          <label>Short Description</label>
           <ReactQuill
-            id="event-description"
             value={description}
             onChange={setDescription}
             theme="snow"
-            modules={quillModules}
           />
         </div>
         <div className="quill-container">
-          <label htmlFor="event-details">Detailed Description</label>
+          <label>Detailed Description</label>
           <ReactQuill
-            id="event-details"
             value={details}
             onChange={setDetails}
             theme="snow"
-            modules={quillModules}
           />
         </div>
         <input
@@ -135,14 +145,11 @@ const CreateEvent = () => {
           onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
         />
         <button type="submit" className="submit-button">
-          Create Event
+          Update Event
         </button>
       </form>
     </div>
-    <Footer />
-    </>
-
   );
-};
+}
 
-export default CreateEvent;
+export default UpdateEvent;

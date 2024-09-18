@@ -21,4 +21,6 @@ router.post('/:id/unregister', authMiddleware('jwt'), eventController.cancelRegi
 router.get('/events_created', authMiddleware('jwt'), eventController.getUserEvents);
 router.get('/events_registered', authMiddleware('jwt'), eventController.getRegisteredEvents);
 
+router.put('/:id', authMiddleware('jwt'), eventController.updateEvent);
+
 module.exports = router;

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';  // Add useNavigate here
 import '../styles/EventDetails.css';
 import HomeHeader from '../components/HomeHeader/HomeHeader';
+import { FaEdit } from 'react-icons/fa'; // Import the edit icon
 
 type Event = {
   _id: string;
@@ -23,6 +24,7 @@ function EventDetails() {
   const [error, setError] = useState('');
   const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState('');
+  const navigate = useNavigate(); // Hook to navigate between pages
 
   useEffect(() => {
     const fetchEventDetails = async () => {
@@ -122,6 +124,11 @@ function EventDetails() {
     }
   };
 
+  // Handler for clicking the update icon
+  const handleUpdateClick = () => {
+    navigate(`/update-event/${eventId}`);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -170,10 +177,23 @@ function EventDetails() {
               <p>{event.capacity} Attendees</p>
             </div>
 
-            <div className="organizer-info">
-              <label>Organizer</label>
-              <p>{event.organizer.name}</p>
-              <p>{event.organizer.email}</p>
+            <div className="organizer-container">
+              <label className="organizer-label">Organizer</label> {/* Add this label */}
+              <div className="organizer-info">
+                <img 
+                  src={event.organizer.profileImage
+                    ? `http://localhost:7999/${event.organizer.profileImage}`
+                    : 'https://github.com/malhaouit/helper/blob/main/default%20profile.png?raw=true'}
+                  alt="Organizer"
+                  className="small-profile-image"
+                />
+                <div className="organizer-details">
+                  <h3>{event.organizer.name}</h3>
+                  <button className="view-profile-button" onClick={() => navigate(`/profile/${event.organizer._id}`)}>
+                    View Profile
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -192,6 +212,13 @@ function EventDetails() {
           </div>
         </div>
       </div>
+
+      {/* Add the update button below the content */}
+      {/* <div className="update-event-button">
+        <button onClick={handleUpdateClick}>
+          <FaEdit /> Update Event
+        </button>
+      </div> */}
     </div>
   );
 }

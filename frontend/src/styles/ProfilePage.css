@@ -1,0 +1,122 @@
+/* Container for the entire profile page */
+.profile-page {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Georgia, Times, 'Times New Roman', serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+}
+
+/* Profile Header Container */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center profile content horizontally */
+  justify-content: center; /* Center profile content vertically */
+  text-align: center;
+}
+
+/* Profile Image Styling */
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%; /* Circular image */
+  object-fit: cover; /* Ensure image fits within the circle */
+  margin-bottom: 20px;
+  border: 3px solid #ccc;
+}
+
+/* Profile Name Styling */
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #5c0086;
+  font-weight: normal;
+  font-family: Impact, 'Arial Narrow Bold', sans-serif;
+}
+
+/* Buttons container to align horizontally */
+.profile-buttons {
+  display: flex;
+  gap: 15px; /* Adds space between the buttons */
+  margin-top: 10px;
+}
+
+/* Buttons styling */
+.follow-button,
+.contact-button {
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-family: Georgia, Times, 'Times New Roman', serif;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.follow-button {
+  background-color: #12cb44;
+  color: white;
+}
+
+.follow-button:hover {
+  background-color: #0fa233;
+}
+
+.contact-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.contact-button:hover {
+  background-color: #0056b3;
+}
+
+/* Profile Image Upload Styling */
+.profile-image-upload {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center; /* Center the input horizontally */
+}
+
+/* Media Queries for Responsiveness */
+
+/* Tablet and below */
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .follow-button,
+  .contact-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile and below */
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .follow-button,
+  .contact-button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}

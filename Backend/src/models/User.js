@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: [true, 'Email is required'], unique: true, lowercase: true, validate: [isEmail, 'Please enter a valid email']},
     password: { type: String },
     isEmailConfirmed: { type: Boolean, default: false },
-    confirmationToken: { type: String }
+    confirmationToken: { type: String },
+    profileImage: { type: String, default: 'https://github.com/malhaouit/helper/blob/main/default%20profile.png?raw=true' }
 });
 
 // Index definitions

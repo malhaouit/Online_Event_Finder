@@ -42,4 +42,6 @@ router.get(
     res.redirect('/api/event/allEvents'); // Change based on your route setup
   }
 );
+
+
 module.exports = router;

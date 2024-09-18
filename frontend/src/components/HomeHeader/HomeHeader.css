@@ -11,7 +11,8 @@
 }
 
 /* Logo styling */
-.header-logo-img {
+.home-header-logo .header-logo-img {
+  width: 250px;
   height: 50px;
   cursor: pointer;
 }
@@ -21,11 +22,11 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 350px;
   gap: 10px;
   background-color: #f1f1f1;
   border-radius: 20px;
   padding: 8px 15px;
-  width: 300px;
 }
 
 .search-icon {
@@ -75,7 +76,8 @@
 /* Navigation Links */
 .home-header-nav {
   display: flex;
-  gap: 20px;
+  gap: 30px;
+  margin: 0px 30px;
 }
 
 .home-header-nav a {
@@ -96,6 +98,7 @@
 .home-header-auth {
   display: flex;
   align-items: center;
+  gap: 30px;
 }
 
 .auth-link {
@@ -103,7 +106,6 @@
   font-size: 18px;
   color: #333;
   text-decoration: none;
-  margin-left: 20px;
 }
 
 .user-info {
@@ -116,30 +118,86 @@
   color: #12CB44;
 }
 
+/* Profile circle and dropdown styling */
+.profile-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-initial {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #12cb44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.5em;
+}
+
+/* Dropdown aligned to start from the left of the circle */
+.profile-dropdown {
+  position: absolute;
+  top: 65px; /* Distance from the top of the circle */
+  right: 0; /* Align to the left of the circle */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  z-index: 1000;
+  transform: translateX(-45%); /* Slight shift to the left for alignment */
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  text-align: left;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.9em;
+  border-bottom: 1px solid #ddd;
+}
+
+.dropdown-item:hover {
+  background-color: #f9f9f9;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
 /* Responsive Styling */
 @media (max-width: 768px) {
   .home-header {
-    flex-direction:column;
-    align-items:center;
-  }
-  .home-header-logo {
-    order: 0; /* Ensure logo is always first */
+    flex-direction: column;
+    align-items: center;
   }
 
-  .home-header-search{
+  .home-header-logo {
+    order: 0;
+  }
+
+  .home-header-search {
     display: flex;
   }
-  .home-header-nav  {
-    display:flex;
-    justify-content: center; 
+
+  .home-header-nav {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    flex-direction:row;
+    flex-direction: row;
     gap: 10px;
     background-color: #fff;
     width: 100%;
     margin-top: 10px;
-    
   }
- 
-
 }

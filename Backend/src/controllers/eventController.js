@@ -178,33 +178,52 @@ exports.registerForEvent = async (req, res) => {
     try {
         const { id } = req.params;  // Event ID from URL
         const userId = req.user.id;  // Current logged-in user
-    
+
         const event = await Event.findById(id);
 
-	if (!event) {
-	    return res.status(404).json({ msg: 'Event not found' });
-	}
-    
-	// Check if the user is already registered
-	if (event.registeredUsers.includes(userId)) {
-	    return res.status(400).json({ msg: 'You have already registered for this event.' });
-	}
+        if (!event) {
+            return res.status(404).json({ msg: 'Event not found' });
+        }
 
-	// Check if the event has available capacity
-	if (event.registeredUsers.length >= event.capacity) {
-	    return res.status(400).json({ msg: 'This event is fully booked.' });
-	}
+        // Check if the user is already registered
+        if (event.registeredUsers.includes(userId)) {
+            return res.status(400).json({ msg: 'You have already registered for this event.' });
+        }
 
-	// Register the user
-	event.registeredUsers.push(userId);
-	await event.save();
+        // Check if the event has available capacity
+        if (event.registeredUsers.length >= event.capacity) {
+            return res.status(400).json({ msg: 'This event is fully booked.' });
+        }
 
-	return res.json({ msg: 'Successfully registered for the event.' });
+        // Register the user
+        event.registeredUsers.push(userId);
+        await event.save();
+
+        // Get the user details from req.user (assuming you're using some authentication middleware)
+        const user = {
+            name: req.user.name,
+            email: req.user.email
+        };
+
+        // Send registration confirmation email
+        const eventDetails = {
+            title: event.title,
+            date: event.date,
+            time: event.time,
+            location: event.location,
+            image: event.image  // Include the image if present
+        };
+
+        // Call the email service to send the confirmation email
+        await emailService.sendEventRegistrationEmail(user.email, user.name, eventDetails, event.image);
+
+        return res.json({ msg: 'Successfully registered for the event and confirmation email sent.' });
     } catch (err) {
-	console.error(err.message);
-	return res.status(500).send('Server error');
+        console.error(err.message);
+        return res.status(500).send('Server error');
     }
 };
+
 
 exports.cancelRegistration = async (req, res) => {
     const { id } = req.params; // event ID

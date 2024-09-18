@@ -14,10 +14,12 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 app.use(cors());
 
-// Route
+// Serve static files from the 'uploads' directory
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+// Routes
 app.use('/api/auth', require('./routes/authRoute'));
 app.use('/api/event', require('./routes/eventRoute'));
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 const PORT = process.env.PORT;
 
@@ -37,17 +39,3 @@ app.use((err, req, res, next) => {
   console.error('Global error handler:', err.message);
   res.status(500).send('Internal server error');
 });
-
-// const express = require('express');
-// const app = express();
-
-// app.use(express.json());
-
-// app.get('/test', (req, res) => {
-//     res.send('Test Successful');
-// });
-
-// const PORT = 7999;
-// app.listen(PORT, () => {
-//     console.log(`Server running port ${PORT}`);
-// });

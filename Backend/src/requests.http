@@ -18,6 +18,14 @@ Connection: keep-alive
     "password": "!123Four"
 }
 
+### Register Event
+POST http://localhost:7999/api/event/66e87737314277d3a3a11915/register
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZkZjAzZWRjNWMxZmVmZDY5ODUzNDBmIiwiZW1haWwiOiJuYWluYWhrNDcwQGdtYWlsLmNvbSIsIm5hbWUiOiJOYWluYSJ9LCJpYXQiOjE3MjY2NTU0NjcsImV4cCI6MTcyNjY1OTA2N30.JW_CKfOSNrQpImKyoRzz8BHAYfFyt1XIYaEqpTqqJWg
+
+### Register Event
+POST http://localhost:7999/api/event/66e87737314277d3a3a11915/unregister
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjZkZjAzZWRjNWMxZmVmZDY5ODUzNDBmIiwiZW1haWwiOiJuYWluYWhrNDcwQGdtYWlsLmNvbSIsIm5hbWUiOiJOYWluYSJ9LCJpYXQiOjE3MjY2NTU0NjcsImV4cCI6MTcyNjY1OTA2N30.JW_CKfOSNrQpImKyoRzz8BHAYfFyt1XIYaEqpTqqJWg
+
 ### Reset Password
 POST http://localhost:7999/api/auth/reset-password
 Content-Type: application/json

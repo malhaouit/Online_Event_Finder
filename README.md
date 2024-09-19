@@ -12,7 +12,7 @@ A platform to create, find, and register for events.
 - [License](#license)
 
 ## Project Overview
-**Online Event Finder** is a web platform that allows users to create, search, and register for various events. It simplifies the process of finding local or global events by providing a user-friendly interface where users can register as attendees or organizers. Organizers can create events, upload event images, and manage participant registrations, while attendees can search and register for upcoming events.  
+**Online Event Finder** is a web platform that allows users to create, search, and register for various events. It simplifies the process of finding local or global online events by providing a user-friendly interface where users can register as attendees or organizers. Organizers can create events, upload event images, and manage participant registrations, while attendees can search and register for upcoming events.  
 
 The project includes:
 
@@ -25,7 +25,7 @@ The project includes:
 
 - **User Authentication:** Sign up, log in, and log out with JWT authentication or Google OAuth.
 - **Event Management**: Users can create, update, and delete their own events.
-- **Event Search**: Find events by title, description, or location using the search bar.
+- **Event Search**: Find events by title using the search bar.
 - **Profile Management**: Users can upload a profile picture and manage their profile information.
 - **Image Upload**: Organizers can upload images for their events.
 - **Event Registration**: Users can register for events and cancel their registration if needed.
@@ -49,8 +49,8 @@ The project includes:
 ### Other Tools:
 
 - Google OAuth for social login
-- Nodemailer for sending confirmation emails
-- Heroku/AWS for deployment (optional)
+- SendGrid for sending confirmation emails
+- Vercel for deployment
 
 ## Installation
 To run this project locally, follow these steps:
@@ -77,7 +77,7 @@ cd ../frontend
 npm install
 ```  
 
-3. Set up environment variables: You'll need to configure environment variables for both the frontend and backend.
+3. **Set up environment variables:** You'll need to configure environment variables for both the frontend and backend.
 
 ## Environment Variables
 
@@ -125,4 +125,3 @@ npm run dev
 - **Event Recommendations:** Use machine learning to recommend events based on user preferences.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more information.

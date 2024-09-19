@@ -65,7 +65,7 @@ cd Online_Event_Finder
 2. **Install dependencies:**  
 For the backend:  
 
-````
+```
 cd backend
 npm install
 ```  

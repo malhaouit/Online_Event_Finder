@@ -55,3 +55,4 @@ Connection: keep-alive
 
 ### Get events
 GET http://localhost:7999/api/event/allEvents
+Content-Type: application/json

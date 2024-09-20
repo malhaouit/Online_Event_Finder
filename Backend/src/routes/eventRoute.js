@@ -8,8 +8,8 @@ router.post('/create', authMiddleware('jwt'), (req, res, next) => {
     console.log('User after authentication:', req.user); // Add for debugging
     next();
 }, eventController.createEvent);
-router.get('/allEvents', authMiddleware('jwt'), eventController.getEvents);
-
+// router.get('/allEvents', authMiddleware('jwt'), eventController.getEvents);
+router.get('/allEvents', eventController.getEvents);
 router.get('/search', eventController.searchEvents);
 
 router.get('/:id', eventController.getEventById);

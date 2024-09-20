@@ -19,7 +19,7 @@ const UpcomingEvents = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:7999/api/event/allEvents', {
+        const response = await fetch('http://localhost:7999/api/event/allEvents?page=1&limit=4', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

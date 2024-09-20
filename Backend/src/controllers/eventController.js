@@ -306,7 +306,6 @@ exports.getRegisteredEvents = async (req, res) => {
     }
 };
 
-<<<<<<< Updated upstream
 // Update event by ID, including image upload
 exports.updateEvent = (req, res) => {
     upload(req, res, async (err) => {
@@ -351,34 +350,3 @@ exports.updateEvent = (req, res) => {
       }
     });
   };  
-=======
-// UpcomingEvents Function
-// exports.upcomingEvents = async (req, res) => {
-//     try {
-//         const page = parseInt(req.query.page) || 1;
-//         const limit = 4;
-//         const skip = (page - 1) * limit;
-
-//         const db = getDB();
-//         const eventsCollection = db.collection('events');
-        
-//         const events = await eventsCollection.find()
-//             .skip(skip)
-//             .limit(limit)
-//             .toArray();
-
-//         const totalEvents = await eventsCollection.countDocuments();
-//         const totalPages = Math.ceil(totalEvents / limit);
-
-//         res.json({
-//             events,
-//             currentPage: page,
-//             totalPages,
-//             totalEvents
-//         });
-//     } catch (err) {
-//         console.error(err.message);
-//         res.status(500).send('Server error');
-//     }
-// };
->>>>>>> Stashed changes

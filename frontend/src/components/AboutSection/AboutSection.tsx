@@ -1,5 +1,6 @@
 import './AboutSection.css'
 import About_image from '../../assets/About_image.png'
+import { Link } from 'react-router-dom'
 
 const AboutSection = () => {
   return (
@@ -18,7 +19,9 @@ Our platform is tailored for both attendees looking to expand their knowledge an
        <img className='About-image' src={About_image}/>
        </div>
        <div>
+       <Link to="/get-in-touch" >
           <button className='more-events-button'>Get In Touch</button>
+        </Link>
         </div>
     </div>
     </div>

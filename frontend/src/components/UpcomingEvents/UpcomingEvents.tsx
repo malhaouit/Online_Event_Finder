@@ -6,6 +6,7 @@ import Data_science from '../../assets/Data_science.jpg';
 import Python_course from '../../assets/Python_course.jpg';
 import { MdDateRange } from 'react-icons/md';
 import { TbClockHour10 } from 'react-icons/tb';
+import { Link } from 'react-router-dom';
 
 // Define the Event type
 type Event = {
@@ -85,7 +86,9 @@ const UpcomingEvents = () => {
 
       {/* Button Container */}
       <div className="UpcomingEvents-button-container">
+      <Link to="/moreEvents" >
         <button className="more-events-button">More Events</button>
+        </Link>
       </div>
     </div>
   );

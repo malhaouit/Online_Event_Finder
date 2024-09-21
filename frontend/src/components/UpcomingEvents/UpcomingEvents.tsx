@@ -1,14 +1,9 @@
+import { useEffect, useState } from 'react';
 import './UpcomingEvents.css';
-
-import cyber_security from '../../assets/cyber_security.png';
-import Artificial_intelligence from '../../assets/Artificial_intelligence.jpeg';
-import Data_science from '../../assets/Data_science.jpg';
-import Python_course from '../../assets/Python_course.jpg';
 import { MdDateRange } from 'react-icons/md';
 import { TbClockHour10 } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 
-// Define the Event type
 type Event = {
   id: string;
   title: string;
@@ -18,42 +13,40 @@ type Event = {
   image: string;
 };
 
-const upcomingEvents: Event[] = [
-  {
-    id: '1',
-    title: 'Artificial Intelligence course',
-    category: 'Education',
-    date: '15 Sept 2024',
-    time: '9:00',
-    image: Artificial_intelligence,
-  },
-  {
-    id: '2',
-    title: 'Cyber Security course',
-    category: 'Education',
-    date: '15 Sept 2024',
-    time: '9:00',
-    image: cyber_security,
-  },
-  {
-    id: '3',
-    title: 'Data Science course',
-    category: 'Education',
-    date: '15 Sept 2024',
-    time: '9:00',
-    image: Data_science,
-  },
-  {
-    id: '4',
-    title: 'Python Course',
-    category: 'Education',
-    date: '15 Sept 2024',
-    time: '9:00',
-    image: Python_course,
-  },
-];
-
 const UpcomingEvents = () => {
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch('http://localhost:7999/api/event/allEvents?page=1&limit=4', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUpcomingEvents(data.events); // Make sure to access the "events" property from your backend response
+        } else {
+          console.error('Failed to fetch events:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents(); // Immediately invoke the async function
+  }, []);
+
+  if (loading) {
+    return <div>Loading events...</div>;
+  }
+
   return (
     <div className="section-wrapper">
       <div className="section-header">
@@ -84,7 +77,6 @@ const UpcomingEvents = () => {
         ))}
       </div>
 
-      {/* Button Container */}
       <div className="UpcomingEvents-button-container">
       <Link to="/moreEvents" >
         <button className="more-events-button">More Events</button>

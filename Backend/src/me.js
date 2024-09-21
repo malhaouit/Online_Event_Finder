@@ -1,4 +1,4 @@
-Here are my backend files;
+// Here are my backend files;
 // src/controllers/eventController.js;
 const Event = require('../models/Event');
 const { getDB } = require('../config/db');

@@ -1,8 +1,18 @@
 import './AboutSection.css'
+import  { useRef } from 'react';
 import About_image from '../../assets/About_image.png'
 import { Link } from 'react-router-dom'
+import ContactForm from '../../pages/contactForm';
 
 const AboutSection = () => {
+  const contactFormRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToContactForm = () => {
+    if (contactFormRef.current) {
+      contactFormRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div id="about-section">
     <div className='section-wrapper'>
@@ -23,9 +33,11 @@ Our platform is tailored for both attendees looking to expand their knowledge an
           <button className='more-events-button'>Get In Touch</button>
         </Link>
         </div>
+        <div ref={contactFormRef}>
+        <ContactForm />
+      </div>
     </div>
     </div>
-
   )
 }
 

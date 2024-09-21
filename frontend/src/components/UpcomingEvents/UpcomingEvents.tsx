@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './UpcomingEvents.css';
 import { MdDateRange } from 'react-icons/md';
 import { TbClockHour10 } from 'react-icons/tb';
+import { Link } from 'react-router-dom';
 
 type Event = {
   id: string;
@@ -77,7 +78,9 @@ const UpcomingEvents = () => {
       </div>
 
       <div className="UpcomingEvents-button-container">
+      <Link to="/moreEvents" >
         <button className="more-events-button">More Events</button>
+        </Link>
       </div>
     </div>
   );

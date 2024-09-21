@@ -1,6 +1,7 @@
 import './AboutSection.css'
 import  { useRef } from 'react';
 import About_image from '../../assets/About_image.png'
+import { Link } from 'react-router-dom'
 import ContactForm from '../../pages/contactForm';
 
 const AboutSection = () => {
@@ -28,14 +29,15 @@ Our platform is tailored for both attendees looking to expand their knowledge an
        <img className='About-image' src={About_image}/>
        </div>
        <div>
-          <button className='more-events-button' onClick={scrollToContactForm}>Get In Touch</button>
+       <Link to="/get-in-touch" >
+          <button className='more-events-button'>Get In Touch</button>
+        </Link>
         </div>
         <div ref={contactFormRef}>
         <ContactForm />
       </div>
     </div>
     </div>
-
   )
 }
 

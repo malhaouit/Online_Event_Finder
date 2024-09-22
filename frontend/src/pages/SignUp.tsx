@@ -12,32 +12,40 @@ function SignUp() {
   // const navigate = useNavigate();
 
   const handleSignUp = async () => {
+    if (!name || !email || !password || !confirmPassword) {
+      alert('All fields are required!');
+      return;
+    }
+  
     if (password !== confirmPassword) {
       alert('Passwords do not match!');
       return;
     }
-
-    const response = await fetch('http://localhost:7999/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, password, confirmPassword }),  // Ensure confirmPassword is included
-    });
-
-    // const data = await response.json();
-    //console.log('Response data:', data);  // Log the backend response
-
-    if (response.ok) {
-      alert('Confirmatin link sent to your email');
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-    } else {
-      alert('Sign-up failed');
+  
+    try {
+      const response = await fetch('http://localhost:7999/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password, confirmPassword }),
+      });
+  
+      if (response.ok) {
+        alert('Confirmation link sent to your email');
+        setName('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+      } else {
+        const errorData = await response.json();
+        alert(`Sign-up failed: ${errorData.msg || 'Server error'}`);
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+      alert('An error occurred during sign-up.');
     }
-  };
+  };  
 
   return (
     <>

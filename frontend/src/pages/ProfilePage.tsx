@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import '../styles/ProfilePage.css';
 
 type User = {
@@ -10,13 +11,19 @@ type User = {
 
 const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const userId = '66e8d153196bffd4e57aeb0e'; // Example user ID
+  const { userId } = useParams<{ userId: string }>();
+
+   // Get the logged-in user's ID from localStorage
+   const loggedInUser = localStorage.getItem('user');
+   const loggedInUserId = loggedInUser ? JSON.parse(loggedInUser)._id : null;
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       const token = localStorage.getItem('token'); // Get the token from localStorage
+      const profileUrl = userId === 'me' ? '/me' : `/${userId}`; // If URL is `/me`, fetch the logged-in user's profile
+
       try {
-        const response = await fetch(`http://localhost:7999/api/profile/${userId}`, {
+        const response = await fetch(`http://localhost:7999/api/profile${profileUrl}`, {
           headers: {
             Authorization: `Bearer ${token}`, // Pass token in Authorization header
           },
@@ -49,7 +56,7 @@ const ProfilePage: React.FC = () => {
     formData.append('profileImage', file);
 
     try {
-      const response = await fetch(`http://localhost:7999/api/profile/update-profile-image/${userId}`, {
+      const response = await fetch(`http://localhost:7999/api/profile/update-profile-image/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`, // Pass token in Authorization header
@@ -76,7 +83,7 @@ const ProfilePage: React.FC = () => {
     <div className="profile-page">
       <div className="profile-header">
         <img
-          src={`http://localhost:7999/${user.profileImage}` || 'https://github.com/malhaouit/helper/blob/main/default%20profile.png?raw=true'}
+          src={user.profileImage ? `http://localhost:7999/${user.profileImage}` : 'https://github.com/malhaouit/helper/blob/main/default%20profile.png?raw=true'}
           alt={user.name}
           className="profile-image"
         />
@@ -88,10 +95,13 @@ const ProfilePage: React.FC = () => {
           <button className="contact-button">Contact</button>
         </div>
       </div>
-  
-      <div className="profile-image-upload">
-        <input type="file" accept="image/*" onChange={handleProfileImageUpload} />
-      </div>
+
+      {/* Show profile image upload input only if the logged-in user is the profile owner */}
+      {userId === 'me' || loggedInUserId === user._id ? (
+        <div className="profile-image-upload">
+          <input type="file" accept="image/*" onChange={handleProfileImageUpload} />
+        </div>
+      ) : null}
     </div>
   );
   

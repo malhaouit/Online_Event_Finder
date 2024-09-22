@@ -9,12 +9,16 @@ dotenv.config();
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 
-// Register a new user
 exports.register = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body;
 
     try {
         console.log('Starting registration process');
+
+        // Ensure all fields are provided
+        if (!name || !email || !password || !confirmPassword) {
+            return res.status(400).json({ msg: 'All fields are required' });
+        }
 
         // Check if user already exists
         let user = await User.findOne({ email });
@@ -23,30 +27,33 @@ exports.register = async (req, res) => {
             return res.status(400).json({ msg: 'User already exists' });
         }
 
-	// Check if password and confirmPassword match
-	if (password !== confirmPassword) {
-	    return res.status(400).json({ msg: 'Passwords do not match' });
-	}
+        // Check if password and confirmPassword match
+        if (password !== confirmPassword) {
+            return res.status(400).json({ msg: 'Passwords do not match' });
+        }
+
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
 
-	// Generate email confirmation token
-        const confirmationToken = crypto.randomBytes(20).toString('hex');
+        // Generate email confirmation token
+        const confirmationToken = encodeURIComponent(crypto.randomBytes(20).toString('hex'));
 
         // Create a new user instance
         user = new User({
             name,
             email,
             password: hashedPassword,
-	    confirmationToken
+            confirmationToken
         });
 
         // Save the new user in the database
         await user.save();
 
-	// Send confirmation email
+        // Send confirmation email
         const confirmLink = `${process.env.FRONTEND_URL}/confirm/${confirmationToken}`;
-	await emailService.sendConfirmationEmail(email, confirmLink);
+        await emailService.sendConfirmationEmail(email, confirmLink);
+
+        res.status(200).json({ msg: 'User registered successfully. Please confirm your email.' });
     } catch (err) {
         console.error('Register error:', err.message);
         res.status(500).send('Server error');

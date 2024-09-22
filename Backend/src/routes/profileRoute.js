@@ -6,9 +6,12 @@ const profileController = require('../controllers/profileController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Route to update the profile image
-router.post('/update-profile-image/:userId', authMiddleware('jwt'), profileController.updateProfileImage);
+router.post('/update-profile-image', authMiddleware('jwt'), profileController.updateProfileImage);
 
-// Route to fetch user profile data
-router.get('/:userId', profileController.getProfile);
+// Route to fetch the logged-in user's profile
+router.get('/me', authMiddleware('jwt'), profileController.getProfile);
+
+// Route to fetch any user's profile by their userId
+router.get('/:userId', authMiddleware('jwt'), profileController.getProfileById);
 
 module.exports = router;

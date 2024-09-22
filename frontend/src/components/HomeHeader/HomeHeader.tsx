@@ -1,3 +1,4 @@
+// src/components/HomeHeader/HomeHeader.css
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom'; 
 import './HomeHeader.css';

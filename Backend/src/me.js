@@ -94,10 +94,27 @@ exports.createEvent = (req, res) => {
 
 exports.getEvents = async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
         const db = getDB();
         const eventsCollection = db.collection('events');
-        const events = await eventsCollection.find().toArray();
-        res.json(events);
+        
+        const events = await eventsCollection.find()
+            .skip(skip)
+            .limit(limit)
+            .toArray();
+
+        const totalEvents = await eventsCollection.countDocuments();
+        const totalPages = Math.ceil(totalEvents / limit);
+
+        res.json({
+            events,
+            currentPage: page,
+            totalPages,
+            totalEvents
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -132,16 +149,19 @@ exports.searchEvents = async (req, res) => {
 // Fetch event details by ID
 exports.getEventById = async (req, res) => {
     const { id } = req.params;
-
+    
     try {
-        const event = await Event.findById(id).populate('organizer', 'name email').select('title description details date time location image capacity organizer');
+        const event = await Event.findById(id).populate('organizer', 'name email profileImage').select('title description details date time location image capacity organizer registeredUsers');
 
         if (!event) {
             return res.status(404).json({ msg: 'Event not found' });
 	}
 
+	// Check if the user is logged in
+	const userId = req.user ? req.user.id : null;
+
 	// Check if the user is registered for the event
-        const isRegistered = Array.isArray(event.registeredUsers) && event.registeredUsers.some(user => user.toString() === userId);
+        const isRegistered = userId && Array.isArray(event.registeredUsers) ? event.registeredUsers.some(user => user.toString() === userId): false;
 
 	// Add the `isRegistered` field to the event data
 	const eventWithRegistrationStatus = {
@@ -160,33 +180,52 @@ exports.registerForEvent = async (req, res) => {
     try {
         const { id } = req.params;  // Event ID from URL
         const userId = req.user.id;  // Current logged-in user
-    
+
         const event = await Event.findById(id);
 
-	if (!event) {
-	    return res.status(404).json({ msg: 'Event not found' });
-	}
-    
-	// Check if the user is already registered
-	if (event.registeredUsers.includes(userId)) {
-	    return res.status(400).json({ msg: 'You have already registered for this event.' });
-	}
+        if (!event) {
+            return res.status(404).json({ msg: 'Event not found' });
+        }
 
-	// Check if the event has available capacity
-	if (event.registeredUsers.length >= event.capacity) {
-	    return res.status(400).json({ msg: 'This event is fully booked.' });
-	}
+        // Check if the user is already registered
+        if (event.registeredUsers.includes(userId)) {
+            return res.status(400).json({ msg: 'You have already registered for this event.' });
+        }
 
-	// Register the user
-	event.registeredUsers.push(userId);
-	await event.save();
+        // Check if the event has available capacity
+        if (event.registeredUsers.length >= event.capacity) {
+            return res.status(400).json({ msg: 'This event is fully booked.' });
+        }
 
-	return res.json({ msg: 'Successfully registered for the event.' });
+        // Register the user
+        event.registeredUsers.push(userId);
+        await event.save();
+
+        // Get the user details from req.user (assuming you're using some authentication middleware)
+        const user = {
+            name: req.user.name,
+            email: req.user.email
+        };
+
+        // Send registration confirmation email
+        const eventDetails = {
+            title: event.title,
+            date: event.date,
+            time: event.time,
+            location: event.location,
+            image: event.image  // Include the image if present
+        };
+
+        // Call the email service to send the confirmation email
+        await emailService.sendEventRegistrationEmail(user.email, user.name, eventDetails, event.image);
+
+        return res.json({ msg: 'Successfully registered for the event and confirmation email sent.' });
     } catch (err) {
-	console.error(err.message);
-	return res.status(500).send('Server error');
+        console.error(err.message);
+        return res.status(500).send('Server error');
     }
 };
+
 
 exports.cancelRegistration = async (req, res) => {
     const { id } = req.params; // event ID
@@ -214,88 +253,159 @@ exports.cancelRegistration = async (req, res) => {
     }
 };
 
-
-// src/utils/email.js;
-// emailService.js
-
-const sgMail = require('@sendgrid/mail');
-const dotenv = require('dotenv');
-dotenv.config();
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-const sendEmail = async (to, subject, text, htmlContent) => {
+exports.getUserEvents = async (req, res) => {
     try {
-        const msg = {
-            to: to,
-            from: process.env.EMAIL_USER,
-            subject: subject,
-            text: text, // Plain text version for non-HTML clients
-            html: htmlContent, // HTML version of the email
-        };
+        const userId = req.user.id;  // Get the current logged-in user
+        const page = parseInt(req.query.page) || 1;  // Handle pagination
+        const limit = parseInt(req.query.limit) || 10;  // Default limit is 10
+        const skip = (page - 1) * limit;
 
-        await sgMail.send(msg);
-        console.log('Email sent successfully to:', to);
+        // Fetch events created by the user
+        const events = await Event.find({ organizer: userId })
+            .skip(skip)
+            .limit(limit)
+            .populate('registeredUsers');  // Populate registered users to get the count
+
+        const totalEvents = await Event.countDocuments({ organizer: userId });
+        const totalPages = Math.ceil(totalEvents / limit);
+
+        res.json({
+            events,
+            currentPage: page,
+            totalPages,
+            totalEvents,
+        });
     } catch (err) {
-        console.error('Error sending email:', err.message);
-    }
-};
-module.exports = {
-    sendRegistrationEmail: async (email, name) => {
-        const subject = 'Welcome to Online Events Finder!';
-        const text = `Hello ${name},\n\nWelcome to Online Events Finder. We're excited to have you on board!`;
-        const html = `<p>Welcome, <strong>${name}</strong>! We're thrilled to have you join us at Online Events Finder.</p>`;
-        await sendEmail(email, subject, text, html);
-    },
-
-    sendEventRegistrationEmail: async (email, name, eventName) => {
-        const subject = 'Event Registration Confirmation';
-        const text = `Hello ${name},\n\nYou have successfully registered for the event "${eventName}".`;
-        const html = `<p>Hi <strong>${name}</strong>, you've successfully registered for <strong>${eventName}</strong>.</p>`;
-        await sendEmail(email, subject, text, html);
-    },
-
-    sendPasswordResetEmail: async (email, resetLink) => {
-        const subject = 'Password Reset Request';
-        const text = `Hello,\n\nYou have requested to reset your password. Please follow this link to reset your password: ${resetLink}`;
-        const html = `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password.</p>`;
-        await sendEmail(email, subject, text, html);
-    },
-
-    sendConfirmationEmail: async (email, confirmLink) => {
-        const subject = 'Please confirm your email';
-        const text = `Click the following link to confirm your email: ${confirmLink}`;
-        const html = `<p>Click <a href="${confirmLink}">here</a> to confirm your email.</p>`;
-        await sendEmail(email, subject, text, html);
-    },
-
-    sendEventConfirmation: async (email, name, eventDetails) => {
-        const { title, date, time, location } = eventDetails;
-        const subject = 'Event Created Successfully!';
-        const text = `Hello ${name},\n\nYour event "${title}" has been successfully created. Here are the details:\n\nDate: ${date}\nTime: ${time}\nLocation: ${location}\n\nWe look forward to seeing you there!`;
-        const html = `
-            <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-                <header style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="color: #4CAF50;">Online Events Finder</h2>
-                </header>
-                <main style="line-height: 1.6;">
-                    <p>Hello <strong>${name}</strong>,</p>
-                    <p>Your event "<strong>${title}</strong>" has been successfully created. Here are the event details:</p>
-                    <ul style="list-style-type: none; padding: 0;">
-                        <li><strong>Event Name:</strong> ${title}</li>
-                        <li><strong>Date:</strong> ${date}</li>
-                        <li><strong>Time:</strong> ${time}</li>
-                        <li><strong>Location:</strong> ${location}</li>
-                    </ul>
-                    <p>We look forward to seeing you there!</p>
-                </main>
-                <footer style="text-align: center; margin-top: 20px; font-size: 12px; color: #888;">
-                    <p>&copy; ${new Date().getFullYear()} Online Events Finder. All rights reserved.</p>
-                </footer>
-            </div>
-        `;
-        await sendEmail(email, subject, text, html);
+        console.error(err.message);
+        res.status(500).send('Server error');
     }
 };
 
+exports.getRegisteredEvents = async (req, res) => {
+    try {
+        const userId = req.user.id;  // Get the current logged-in user
+        const page = parseInt(req.query.page) || 1;  // Handle pagination
+        const limit = parseInt(req.query.limit) || 10;  // Default limit is 10
+        const skip = (page - 1) * limit;
 
+        // Fetch events where the user is registered
+        const events = await Event.find({ registeredUsers: userId })
+            .skip(skip)
+            .limit(limit);
+
+        const totalEvents = await Event.countDocuments({ registeredUsers: userId });
+        const totalPages = Math.ceil(totalEvents / limit);
+
+        res.json({
+            events,
+            currentPage: page,
+            totalPages,
+            totalEvents,
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
+
+// Update event by ID, including image upload
+exports.updateEvent = (req, res) => {
+    upload(req, res, async (err) => {
+      if (err) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ msg: 'Image size should be less than 1MB.' });
+        }
+        return res.status(400).json({ msg: 'File upload error.' });
+      }
+  
+      const { title, description, details, date, time, location, capacity } = req.body;
+      const eventId = req.params.id;
+  
+      try {
+        const event = await Event.findById(eventId);
+  
+        if (!event) {
+          return res.status(404).json({ msg: 'Event not found' });
+        }
+  
+        // Update fields with new data
+        event.title = title || event.title;
+        event.description = description || event.description;
+        event.details = details || event.details;
+        event.date = date || event.date;
+        event.time = time || event.time;
+        event.location = location || event.location;
+        event.capacity = capacity || event.capacity;
+  
+        // If a new image is uploaded, update the image field
+        if (req.file) {
+          event.image = `uploads/${req.file.filename}`;
+        }
+  
+        // Save the updated event
+        const updatedEvent = await event.save();
+  
+        res.json(updatedEvent);
+      } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+      }
+    });
+  };  
+
+// Controller to delete an event
+exports.deleteEvent = async (req, res) => {
+    const eventId = req.params.eventId;
+  
+    try {
+      const event = await Event.findById(eventId);
+      
+      if (!event) {
+        return res.status(404).json({ msg: 'Event not found' });
+      }
+  
+      // Ensure only the organizer of the event can delete it
+      if (event.organizer.toString() !== req.user.id) {
+        return res.status(403).json({ msg: 'Not authorized to delete this event' });
+      }
+  
+      await Event.findByIdAndDelete(eventId);
+
+      res.status(200).json({ msg: 'Event deleted successfully' });
+    } catch (err) {
+      console.error('Error deleting event:', err);
+      res.status(500).send('Server error');
+    }
+  };
+
+
+// src/routes/eventRoutes.js;
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
+const eventController = require('../controllers/eventController');
+const authMiddleware = require('../middleware/authMiddleware');
+
+router.post('/create', authMiddleware('jwt'), (req, res, next) => {
+    console.log('User after authentication:', req.user); // Add for debugging
+    next();
+}, eventController.createEvent);
+// router.get('/allEvents', authMiddleware('jwt'), eventController.getEvents);
+router.get('/allEvents', eventController.getEvents);
+router.get('/search', eventController.searchEvents);
+
+router.get('/:id', eventController.getEventById);
+
+router.post('/:id/register', authMiddleware('jwt'), eventController.registerForEvent);
+
+router.post('/:id/unregister', authMiddleware('jwt'), eventController.cancelRegistration);
+
+router.get('/events_created', authMiddleware('jwt'), eventController.getUserEvents);
+router.get('/events_registered', authMiddleware('jwt'), eventController.getRegisteredEvents);
+
+router.put('/:id', authMiddleware('jwt'), eventController.updateEvent);
+
+// Delete event route (auth required)
+router.delete('/:eventId', authMiddleware('jwt'), eventController.deleteEvent);
+
+module.exports = router;

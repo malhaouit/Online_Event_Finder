@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';  // Add useNavigate here
+import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/EventDetails.css';
 import HomeHeader from '../components/HomeHeader/HomeHeader';
-import { FaEdit } from 'react-icons/fa'; // Import the edit icon
+import { FaEdit } from 'react-icons/fa';
 
 type Event = {
   _id: string;
@@ -13,7 +13,7 @@ type Event = {
   location: string;
   capacity?: number;
   image?: string;
-  organizer: { name: string; email: string };
+  organizer: { name: string; email: string; _id: string; profileImage?: string };
   isRegistered: boolean;
 };
 
@@ -27,15 +27,13 @@ function EventDetails() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
-  const navigate = useNavigate(); // Hook to navigate between pages
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEventDetails = async () => {
       try {
         if (!eventId) {
-          setError('No event ID provided');
-          setLoading(false);
-          return;
+          throw new Error('No event ID provided');
         }
 
         const token = localStorage.getItem('token');
@@ -46,18 +44,16 @@ function EventDetails() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch event details');
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log('Fetched event data:', data);
         setEvent(data);
-        setLoading(false);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('An unknown error occurred');
-        }
+      } catch (err) {
+        console.error('Error fetching event details:', err);
+        setError(err instanceof Error ? err.message : 'An unknown error occurred');
+      } finally {
         setLoading(false);
       }
     };
@@ -85,14 +81,14 @@ function EventDetails() {
 
       if (!response.ok) {
         const data = await response.json();
-        setRegisterError(data.msg || 'Failed to register for the event');
-        return;
+        throw new Error(data.msg || `HTTP error! status: ${response.status}`);
       }
 
       setRegisterSuccess('Successfully registered for the event.');
       setEvent(prev => prev ? { ...prev, isRegistered: true } : null);
     } catch (err) {
-      setRegisterError('An error occurred while registering.');
+      console.error('Error registering for event:', err);
+      setRegisterError(err instanceof Error ? err.message : 'An error occurred while registering.');
     }
   };
 
@@ -116,33 +112,20 @@ function EventDetails() {
 
       if (!response.ok) {
         const data = await response.json();
-        setRegisterError(data.msg || 'Failed to cancel registration');
-        return;
+        throw new Error(data.msg || `HTTP error! status: ${response.status}`);
       }
 
       setRegisterSuccess('Successfully canceled your registration.');
       setEvent(prev => prev ? { ...prev, isRegistered: false } : null);
     } catch (err) {
-      setRegisterError('An error occurred while canceling registration.');
+      console.error('Error unregistering from event:', err);
+      setRegisterError(err instanceof Error ? err.message : 'An error occurred while canceling registration.');
     }
   };
 
-  // Handler for clicking the update icon
   const handleUpdateClick = () => {
     navigate(`/update-event/${eventId}`);
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-
-  if (!event) {
-    return <div>No event found.</div>;
-  }
 
   const handleDeleteEvent = async () => {
     setIsDeleting(true);
@@ -155,18 +138,32 @@ function EventDetails() {
         },
       });
   
-      if (response.ok) {
-        alert('Event deleted successfully');
-        navigate('/'); // Redirect to home or another page after deletion
-      } else {
-        setError('Failed to delete event.');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } catch (error) {
-      setError('Error deleting event.');
+
+      console.log('Event deleted successfully');
+      alert('Event deleted successfully');
+      navigate('/');
+    } catch (err) {
+      console.error('Error deleting event:', err);
+      setError(err instanceof Error ? err.message : 'An error occurred while deleting the event.');
     } finally {
       setIsDeleting(false);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error-message">Error: {error}</div>;
+  }
+
+  if (!event) {
+    return <div>No event found.</div>;
+  }
 
   return (
     <div>
@@ -178,7 +175,6 @@ function EventDetails() {
         <div className="event-details-content">
           <div className="event-details-left">
             <h1>{event.title}</h1>
-            {/* Render the description and details using dangerouslySetInnerHTML */}
             <p dangerouslySetInnerHTML={{ __html: event.description }}></p>
 
             {event.details && (
@@ -205,7 +201,7 @@ function EventDetails() {
             </div>
 
             <div className="organizer-container">
-              <label className="organizer-label">Organizer</label> {/* Add this label */}
+              <label className="organizer-label">Organizer</label>
               <div className="organizer-info">
                 <img 
                   src={event.organizer.profileImage
@@ -239,17 +235,15 @@ function EventDetails() {
           </div>
         </div>
 
-        {/* Delete Event Button */}
         <div className="delete-event-button">
           <button className="danger-button" onClick={() => setShowDeleteDialog(true)}>
             Delete Event
           </button>
         </div>
 
-        {/* Delete Confirmation Modal */}
         {showDeleteDialog && (
           <>
-            <div className="dialog-overlay"></div> {/* Add this */}
+            <div className="dialog-overlay"></div>
             <div className="delete-confirmation-dialog">
               <div className="dialog-content">
                 <h3>Are you sure you want to delete this event?</h3>
@@ -266,7 +260,6 @@ function EventDetails() {
           </>
         )}
 
-        {/* Display error if any */}
         {error && <p className="error-message">{error}</p>}
 
       </div>

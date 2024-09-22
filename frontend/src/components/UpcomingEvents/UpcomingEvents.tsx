@@ -5,7 +5,7 @@ import { TbClockHour10 } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 
 type Event = {
-  id: string;
+  _id: string;
   title: string;
   category: string;
   date: string;
@@ -16,6 +16,7 @@ type Event = {
 const UpcomingEvents = () => {
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -29,22 +30,34 @@ const UpcomingEvents = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setUpcomingEvents(data.events); // Make sure to access the "events" property from your backend response
+          console.log('Fetched events:', data);  // Log the fetched data
+          if (Array.isArray(data.events)) {
+            setUpcomingEvents(data.events);
+          } else {
+            setError('Unexpected data format received from server');
+            console.error('Unexpected data format:', data);
+          }
         } else {
+          setError('Failed to fetch events');
           console.error('Failed to fetch events:', response.statusText);
         }
       } catch (error) {
+        setError('Error fetching events');
         console.error('Error fetching events:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchEvents(); // Immediately invoke the async function
+    fetchEvents();
   }, []);
 
   if (loading) {
     return <div>Loading events...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -53,33 +66,38 @@ const UpcomingEvents = () => {
         <h4>Upcoming Events</h4>
       </div>
       <div className="UpcomingEvents-items">
-        {upcomingEvents.map((event) => (
-          <div className="UpcomingEvents-item" key={event.id}>
-            <div className="card-wrapper">
-              <img className="UpcomingEvents-item-image" src={event.image} alt={event.title} />
-              <div className="UpcomingEvents-item-content">
-                <h4 className="UpcomingEvents-item-title">
-                  {event.title} <br />
-                  <span>{event.category}</span>
-                </h4>
-                <ul>
-                  <li>
-                    <MdDateRange /> <span>{event.date}</span>
-                  </li>
-                  <li>
-                    <TbClockHour10 />
-                    <span>{event.time}</span>
-                  </li>
-                </ul>
+        {upcomingEvents.map((event) => {
+          console.log('Event:', event);  // Log each event
+          return (
+            <Link to={`/event/${event._id}`} key={event._id} className="UpcomingEvents-item-link">
+              <div className="UpcomingEvents-item">
+                <div className="card-wrapper">
+                  <img className="UpcomingEvents-item-image" src={event.image} alt={event.title} />
+                  <div className="UpcomingEvents-item-content">
+                    <h4 className="UpcomingEvents-item-title">
+                      {event.title} <br />
+                      <span>{event.category}</span>
+                    </h4>
+                    <ul>
+                      <li>
+                        <MdDateRange /> <span>{event.date}</span>
+                      </li>
+                      <li>
+                        <TbClockHour10 />
+                        <span>{event.time}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            </Link>
+          );
+        })}
       </div>
 
       <div className="UpcomingEvents-button-container">
-      <Link to="/moreEvents" >
-        <button className="more-events-button">More Events</button>
+        <Link to="/allEvents">
+          <button className="more-events-button">More Events</button>
         </Link>
       </div>
     </div>

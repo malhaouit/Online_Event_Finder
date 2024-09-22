@@ -41,7 +41,6 @@ function App() {
 	  <Route path="/event/:eventId" element={<EventDetail />} />
     <Route path="/profile/:userId" element={<ProfilePage />} />
     <Route path="/update-event/:eventId" element={<UpdateEvent />} />
-    <Route path="/moreEvents" element={<LandingPage />} />
     <Route path="/get-in-touch" element={<ContactUs />} />
 
         </Routes>

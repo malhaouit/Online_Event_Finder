@@ -36,7 +36,7 @@ function checkFileType(file, cb) {
 
 // Controller to handle profile image update
 exports.updateProfileImage = async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user.id;
 
   upload(req, res, async (err) => {
     if (err) {
@@ -71,11 +71,29 @@ exports.updateProfileImage = async (req, res) => {
 
 // Controller to fetch user profile
 exports.getProfile = async (req, res) => {
-  const userId = req.params.userId;
+  const userId = req.user.id; // Extract the userId from the authenticated user (req.user)
 
   try {
-    const user = await User.findById(userId).select('-password');
+    const user = await User.findById(userId).select('-password'); // Exclude password from response
     if (!user) {
+      console.log('User not found');
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching profile:', error.message);
+    res.status(500).send('Server error');
+  }
+};
+
+// Controller to fetch any user's profile by their ID
+exports.getProfileById = async (req, res) => {
+  const userId = req.params.userId; // Extract the userId from the request URL parameters
+
+  try {
+    const user = await User.findById(userId).select('-password'); // Exclude password from response
+    if (!user) {
+      console.log('User not found');
       return res.status(404).json({ msg: 'User not found' });
     }
     res.json(user);

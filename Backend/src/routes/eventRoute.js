@@ -23,4 +23,7 @@ router.get('/events_registered', authMiddleware('jwt'), eventController.getRegis
 
 router.put('/:id', authMiddleware('jwt'), eventController.updateEvent);
 
+// Delete event route (auth required)
+router.delete('/:eventId', authMiddleware('jwt'), eventController.deleteEvent);
+
 module.exports = router;

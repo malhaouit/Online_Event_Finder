@@ -24,6 +24,9 @@ function EventDetails() {
   const [error, setError] = useState('');
   const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState('');
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const loggedInUser = JSON.parse(localStorage.getItem('user') || '{}');
   const navigate = useNavigate(); // Hook to navigate between pages
 
   useEffect(() => {
@@ -141,6 +144,30 @@ function EventDetails() {
     return <div>No event found.</div>;
   }
 
+  const handleDeleteEvent = async () => {
+    setIsDeleting(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:7999/api/event/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        alert('Event deleted successfully');
+        navigate('/'); // Redirect to home or another page after deletion
+      } else {
+        setError('Failed to delete event.');
+      }
+    } catch (error) {
+      setError('Error deleting event.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div>
       <HomeHeader />
@@ -211,14 +238,39 @@ function EventDetails() {
             {registerSuccess && <p className="success">{registerSuccess}</p>}
           </div>
         </div>
+
+        {/* Delete Event Button */}
+        <div className="delete-event-button">
+          <button className="danger-button" onClick={() => setShowDeleteDialog(true)}>
+            Delete Event
+          </button>
+        </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteDialog && (
+          <>
+            <div className="dialog-overlay"></div> {/* Add this */}
+            <div className="delete-confirmation-dialog">
+              <div className="dialog-content">
+                <h3>Are you sure you want to delete this event?</h3>
+                <div className="dialog-actions">
+                  <button className="confirm-button" onClick={handleDeleteEvent} disabled={isDeleting}>
+                    {isDeleting ? 'Deleting...' : 'Yes, Delete'}
+                  </button>
+                  <button className="cancel-button" onClick={() => setShowDeleteDialog(false)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Display error if any */}
+        {error && <p className="error-message">{error}</p>}
+
       </div>
 
-      {/* Add the update button below the content */}
-      {/* <div className="update-event-button">
-        <button onClick={handleUpdateClick}>
-          <FaEdit /> Update Event
-        </button>
-      </div> */}
     </div>
   );
 }

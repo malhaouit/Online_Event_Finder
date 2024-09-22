@@ -14,8 +14,7 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 app.use(cors());
 
-// Serve static files from the 'uploads' directory
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 
 // Routes
 app.use('/api/auth', require('./routes/authRoute'));

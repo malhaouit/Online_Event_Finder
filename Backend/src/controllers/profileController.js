@@ -69,9 +69,9 @@ exports.updateProfileImage = async (req, res) => {
   });
 };
 
-// Controller to fetch user profile
+// Controller to fetch a specific user's profile (public access)
 exports.getProfile = async (req, res) => {
-  const userId = req.user.id; // Extract the userId from the authenticated user (req.user)
+  const userId = req.params.userId;
 
   try {
     const user = await User.findById(userId).select('-password'); // Exclude password from response
@@ -86,9 +86,9 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// Controller to fetch any user's profile by their ID
-exports.getProfileById = async (req, res) => {
-  const userId = req.params.userId; // Extract the userId from the request URL parameters
+// Controller to fetch the logged-in user's profile (requires authentication)
+exports.getLoggedInUserProfile = async (req, res) => {
+  const userId = req.user.id; // Extract the userId from the authenticated user (req.user)
 
   try {
     const user = await User.findById(userId).select('-password'); // Exclude password from response

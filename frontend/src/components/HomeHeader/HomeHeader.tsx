@@ -137,7 +137,7 @@ function HomeHeader() {
             </div>
             {dropdownOpen && (
               <div className="profile-dropdown">
-                <Link to={`/profile/${user._id}`} className="dropdown-item">Profile</Link>
+                <Link to={`/profile/me`} className="dropdown-item">Profile</Link>
                 <button onClick={handleLogout} className="dropdown-item">Logout</button>
               </div>
             )}

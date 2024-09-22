@@ -13,20 +13,18 @@ const ProfilePage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const { userId } = useParams<{ userId: string }>();
 
-   // Get the logged-in user's ID from localStorage
-   const loggedInUser = localStorage.getItem('user');
-   const loggedInUserId = loggedInUser ? JSON.parse(loggedInUser)._id : null;
-
   useEffect(() => {
     const fetchUserProfile = async () => {
+      const profileUrl = userId === 'me' ? '/me' : `/${userId}`; // Fetch the organizer's profile or the logged-in user's profile
       const token = localStorage.getItem('token'); // Get the token from localStorage
-      const profileUrl = userId === 'me' ? '/me' : `/${userId}`; // If URL is `/me`, fetch the logged-in user's profile
 
       try {
+        const headers = token
+          ? { Authorization: `Bearer ${token}` } // Include Authorization header if user is logged in
+          : {}; // No headers if not logged in
+
         const response = await fetch(`http://localhost:7999/api/profile${profileUrl}`, {
-          headers: {
-            Authorization: `Bearer ${token}`, // Pass token in Authorization header
-          },
+          headers,
         });
 
         if (!response.ok) {
@@ -59,7 +57,7 @@ const ProfilePage: React.FC = () => {
       const response = await fetch(`http://localhost:7999/api/profile/update-profile-image/`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${token}`, // Pass token in Authorization header
+          Authorization: `Bearer ${token}`, // Pass token in Authorization header for updating the profile
         },
         body: formData,
       });
@@ -78,6 +76,10 @@ const ProfilePage: React.FC = () => {
   if (!user) {
     return <div>Loading...</div>;
   }
+
+  // Get logged-in user's ID for checking profile ownership
+  const loggedInUser = localStorage.getItem('user');
+  const loggedInUserId = loggedInUser ? JSON.parse(loggedInUser)._id : null;
 
   return (
     <div className="profile-page">
@@ -104,7 +106,6 @@ const ProfilePage: React.FC = () => {
       ) : null}
     </div>
   );
-  
 };
 
 export default ProfilePage;

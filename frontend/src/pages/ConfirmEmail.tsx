@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function ConfirmEmail() {
-  const { token } = useParams();
+  const { token } = useParams<{ token: string }>();  // Get the token from URL
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
 

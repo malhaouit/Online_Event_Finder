@@ -163,7 +163,7 @@ const LandingPage = () => {
                   )}
                   <div className="event-details">
                     <h2>{event.title}</h2>
-                    <p>{event.description}</p>
+                    <p dangerouslySetInnerHTML={{ __html: event.description }}></p>
                     <p>Date: {new Date(event.date).toLocaleDateString()}</p>
                     <p>Location: {event.location}</p>
                     <button onClick={() => navigate(`/event/${event._id}`)} className="view-details-btn">View Details</button>

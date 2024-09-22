@@ -350,3 +350,28 @@ exports.updateEvent = (req, res) => {
       }
     });
   };  
+
+// Controller to delete an event
+exports.deleteEvent = async (req, res) => {
+    const eventId = req.params.eventId;
+  
+    try {
+      const event = await Event.findById(eventId);
+      
+      if (!event) {
+        return res.status(404).json({ msg: 'Event not found' });
+      }
+  
+      // Ensure only the organizer of the event can delete it
+      if (event.organizer.toString() !== req.user.id) {
+        return res.status(403).json({ msg: 'Not authorized to delete this event' });
+      }
+  
+      await Event.findByIdAndDelete(eventId);
+
+      res.status(200).json({ msg: 'Event deleted successfully' });
+    } catch (err) {
+      console.error('Error deleting event:', err);
+      res.status(500).send('Server error');
+    }
+  };

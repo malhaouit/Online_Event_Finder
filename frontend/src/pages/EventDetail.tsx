@@ -12,6 +12,7 @@ type Event = {
   date: string;
   location: string;
   capacity?: number;
+  category?: string;
   image?: string;
   organizer: { name: string; email: string; _id: string; profileImage?: string };
   isRegistered: boolean;

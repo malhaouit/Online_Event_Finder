@@ -15,9 +15,9 @@ function LoginHeader() {
           <img src={logo} alt="Online Event Finder" className="header-logo-img" />
         </Link>
       </div>
- {/* Search Bar */}
- <div className="home-header-search">
-	<img src={searchIcon} alt="Search Icon" className="search-icon" />
+      {/* Search Bar */}
+      <div className="home-header-search">
+	      <img src={searchIcon} alt="Search Icon" className="search-icon" />
         <input
           type="text"
           placeholder="Search events, profiles..."
@@ -26,23 +26,22 @@ function LoginHeader() {
       </div>
       {/* Navigation Links */}
       <div className='Icons-LoginHeader'> 
-      <nav className="login-header-nav">
-        <Link to="/">
-          <div className="nav-icon-text">
-            <FaHome />
-          </div>
-        </Link>
-       
-      </nav>
+        <nav className="login-header-nav">
+          <Link to="/">
+            <div className="nav-icon-text">
+              <FaHome />
+            </div>
+          </Link>
+        </nav>
 
-      {/* Authentication Link */}
-      <div className="login-header-auth">
-        <Link to="/signup" className="auth-link">
-          <div className="nav-icon-text">
-            <FaUserPlus />
-          </div>
-        </Link>
-      </div>
+        {/* Authentication Link */}
+        <div className="login-header-auth">
+          <Link to="/signup" className="auth-link">
+            <div className="nav-icon-text">
+              <FaUserPlus />
+            </div>
+          </Link>
+        </div>
       </div>
     </header>
   );

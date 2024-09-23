@@ -47,7 +47,7 @@ exports.createEvent = (req, res) => {
             console.error('File upload error:', err);
             return res.status(400).json({ msg: 'File upload error.' });
         } else {
-            const { title, description, details, date, time, location, image, capacity } = req.body;
+            const { title, description, details, date, time, location, image, capacity, category } = req.body;
 
             try {
                 const db = getDB();
@@ -62,12 +62,13 @@ exports.createEvent = (req, res) => {
                 const event = new Event({
                     title,
                     description,
-		    details,
+		            details,
                     date,
                     time,
                     location,
                     image: req.file ? `uploads/${req.file.filename}` : null,
                     capacity,
+                    category,
                     organizer: user.id
                 });
 

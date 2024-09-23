@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; /* Full viewport height */
   width: 100%; /* Full width of the viewport */
   background-color: #fff;
   box-sizing: border-box;
@@ -21,7 +20,7 @@
 /* Input fields (name, email, and password) */
 .signup-input {
   width: 500px;
-  height: 60px;
+  height: 50px;
   border-radius: 10px;
   background-color: #D9D9D9;
   border: none;
@@ -34,7 +33,7 @@
 /* Styling for the Sign Up button */
 .signup-button {
   width: 500px;
-  height: 60px;
+  height: 50px;
   border-radius: 10px;
   background-color: #12CB44;
   border: none;

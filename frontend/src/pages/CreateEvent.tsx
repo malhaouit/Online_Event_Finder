@@ -14,6 +14,7 @@ const CreateEvent = () => {
   const [time, setTime] = useState('');
   const [location, setLocation] = useState('');
   const [capacity, setCapacity] = useState('');
+  const [category, setCategory] = useState('');
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const CreateEvent = () => {
     formData.append('time', time);
     formData.append('location', location);
     formData.append('capacity', capacity);
+    formData.append('category', category);
     if (image) {
       formData.append('image', image);
     }
@@ -129,6 +131,18 @@ const CreateEvent = () => {
           onChange={(e) => setCapacity(e.target.value)}
           required
         />
+        <div>
+      <label htmlFor="options">Event Category:</label>
+      <select id="options" value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="" disabled>Select an option</option>
+        <option value="option1">Education</option>
+        <option value="option2">Food</option>
+        <option value="option3">Health</option>
+        <option value="option1">Business</option>
+        <option value="option2">Sport</option>
+        <option value="option3">More</option>
+      </select>
+    </div>
         <input
           type="file"
           accept="image/*"

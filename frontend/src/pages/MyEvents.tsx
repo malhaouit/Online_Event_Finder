@@ -14,7 +14,7 @@ interface Event {
 const MyEvents = () => {
   const [createdEvents, setCreatedEvents] = useState<Event[]>([]);
   const [registeredEvents, setRegisteredEvents] = useState<Event[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();  // Create a navigate instance
 

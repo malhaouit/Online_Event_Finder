@@ -9,6 +9,7 @@ const EventSchema = new mongoose.Schema({
     location: { type: String, required: true },
     image: { type: String },
     capacity: { type: Number, required: true },
+    category: { type: String, required: true },
     organizer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     registeredUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }]  // Default to an empty array
 });

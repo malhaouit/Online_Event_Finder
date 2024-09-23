@@ -5,7 +5,7 @@ interface ContainerProps {
     children: ReactNode; // Define the type for children
   }
 
-const Container: React.FC<ContainerProps> = (props) => {
+const   Container: React.FC<ContainerProps> = (props) => {
   return (
     <div className=' container main-container'>
       {props.children}</div>

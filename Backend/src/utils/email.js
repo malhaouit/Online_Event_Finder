@@ -1,5 +1,3 @@
-// emailService.js
-
 const sgMail = require('@sendgrid/mail');
 const { format } = require('date-fns');
 const dotenv = require('dotenv');
@@ -24,7 +22,9 @@ const sendEmail = async (to, subject, text, htmlContent) => {
     }
 };
 
+// Export sendEmail function to be used in other modules
 module.exports = {
+    sendEmail, // Exporting sendEmail function
     sendRegistrationEmail: async (email, name) => {
         const subject = 'Welcome to Online Events Finder!';
         const text = `Hello ${name},\n\nWelcome to Online Events Finder. We're excited to have you on board!`;
@@ -71,7 +71,9 @@ module.exports = {
         `;
     
         await sendEmail(email, subject, text, html);
-    },        
+    },
+
+    // Other functions remain unchanged...
     sendPasswordResetEmail: async (email, resetLink) => {
         const subject = 'Password Reset Request';
         const text = `Hello,\n\nYou have requested to reset your password. Please follow this link to reset your password: ${resetLink}`;

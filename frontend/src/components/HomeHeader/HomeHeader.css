@@ -96,6 +96,7 @@
 
 /* Authentication Links */
 .home-header-auth {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 30px;
@@ -146,15 +147,16 @@
 /* Dropdown aligned to start from the left of the circle */
 .profile-dropdown {
   position: absolute;
-  top: 65px; /* Distance from the top of the circle */
+  top: 40px; /* Distance from the top of the circle */
   right: 0; /* Align to the left of the circle */
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 150px;
-  z-index: 1000;
-  transform: translateX(-45%); /* Slight shift to the left for alignment */
+  min-width: 120px;
+  overflow: hidden;
+  z-index: 100;
+  /* transform: translateX(-45%);  */
 }
 
 .dropdown-item {

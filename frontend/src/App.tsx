@@ -15,7 +15,7 @@ import EventDetail from './pages/EventDetail';
 import ProfilePage from './pages/ProfilePage';
 import MyEvents from './pages/MyEvents';
 import UpdateEvent from './pages/UpdateEvent';
-import ContactUs from './pages/ContactUs';
+import ContactForm from './pages/contactForm';
 
 function App() {
   // Access the client ID from environment variables
@@ -41,7 +41,7 @@ function App() {
 	  <Route path="/event/:eventId" element={<EventDetail />} />
     <Route path="/profile/:userId" element={<ProfilePage />} />
     <Route path="/update-event/:eventId" element={<UpdateEvent />} />
-    <Route path="/get-in-touch" element={<ContactUs />} />
+    <Route path="/get-in-touch" element={<ContactForm />} />
 
         </Routes>
       </Router>

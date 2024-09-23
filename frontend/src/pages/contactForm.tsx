@@ -1,6 +1,9 @@
-import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import '../styles/contactForm.css';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import HomeHeader from '../components/HomeHeader/HomeHeader'; 
+import Footer from '../components/Footer/Footer';
+
+
 
 type ContactFormData = {
   name: string;
@@ -18,6 +21,8 @@ const ContactForm: React.FC = () => {
   };
 
   return (
+    <>
+    <HomeHeader />
     <div className="contact-form-container">
       <h2>Contact Us</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="contact-form">
@@ -75,6 +80,8 @@ const ContactForm: React.FC = () => {
         </div>
       </form>
     </div>
+    <Footer/>
+    </>
   );
 };
 

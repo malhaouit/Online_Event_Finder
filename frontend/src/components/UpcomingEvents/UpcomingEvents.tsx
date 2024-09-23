@@ -21,7 +21,7 @@ const UpcomingEvents = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('http://localhost:7999/api/event/allEvents?page=1&limit=4', {
+        const response = await fetch('http://localhost:7999/api/event/allEvents', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -32,7 +32,8 @@ const UpcomingEvents = () => {
           const data = await response.json();
           console.log('Fetched events:', data);  // Log the fetched data
           if (Array.isArray(data.events)) {
-            setUpcomingEvents(data.events);
+            // Slice the first 3 events to display them
+            setUpcomingEvents(data.events.slice(0, 3));
           } else {
             setError('Unexpected data format received from server');
             console.error('Unexpected data format:', data);
@@ -72,19 +73,19 @@ const UpcomingEvents = () => {
             <Link to={`/event/${event._id}`} key={event._id} className="UpcomingEvents-item-link">
               <div className="UpcomingEvents-item">
                 <div className="card-wrapper">
-                  <img className="UpcomingEvents-item-image" src={event.image} alt={event.title} />
+                  <img className="UpcomingEvents-item-image" src={`http://localhost:7999/${event.image}`} alt={event.title} />
                   <div className="UpcomingEvents-item-content">
                     <h4 className="UpcomingEvents-item-title">
-                      {event.title} <br />
-                      <span>{event.category}</span>
+                      {event.title}
+                      {/* <span>{event.category}</span> */}
                     </h4>
                     <ul>
                       <li>
-                        <MdDateRange /> <span>{event.date}</span>
+                        <MdDateRange /> <span> {event.date}</span>
                       </li>
                       <li>
                         <TbClockHour10 />
-                        <span>{event.time}</span>
+                        <span> {event.time}</span>
                       </li>
                     </ul>
                   </div>

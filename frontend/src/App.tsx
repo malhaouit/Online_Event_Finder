@@ -16,6 +16,7 @@ import ProfilePage from './pages/ProfilePage';
 import MyEvents from './pages/MyEvents';
 import UpdateEvent from './pages/UpdateEvent';
 import ContactUs from './pages/ContactUs';
+// import { EventsByCategory, CategoryList } from './components/EventsByCategory/EventsByCategory';
 
 function App() {
   // Access the client ID from environment variables
@@ -37,12 +38,13 @@ function App() {
           <Route path="/add-event" element={<CreateEvent />} />
           <Route path="/search" element={<Search />} />
           <Route path="/me" element={<MyEvents />} />
-	  <Route path="/search" element={<SearchResults />} />
-	  <Route path="/event/:eventId" element={<EventDetail />} />
-    <Route path="/profile/:userId" element={<ProfilePage />} />
-    <Route path="/update-event/:eventId" element={<UpdateEvent />} />
-    <Route path="/get-in-touch"element={<ContactUs />} />
-
+          <Route path="/search" element={<SearchResults />} />
+          <Route path="/event/:eventId" element={<EventDetail />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
+          <Route path="/update-event/:eventId" element={<UpdateEvent />} />
+          <Route path="/get-in-touch" element={<ContactUs />} />
+          {/* <Route path="/categories" element={<CategoryList />} />
+          <Route path="/events/:category" element={<EventsByCategory />} /> */}
         </Routes>
       </Router>
     </GoogleOAuthProvider>

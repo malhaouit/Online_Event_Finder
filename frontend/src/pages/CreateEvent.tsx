@@ -135,12 +135,12 @@ const CreateEvent = () => {
       <label htmlFor="options">Event Category:</label>
       <select id="options" value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="" disabled>Select an option</option>
-        <option value="option1">Education</option>
-        <option value="option2">Food</option>
-        <option value="option3">Health</option>
-        <option value="option1">Business</option>
-        <option value="option2">Sport</option>
-        <option value="option3">More</option>
+        <option value="Education">Education</option>
+        <option value="Food">Food</option>
+        <option value="Health">Health</option>
+        <option value="Business">Business</option>
+        <option value="Sport">Sport</option>
+        <option value="More">More</option>
       </select>
     </div>
         <input

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { HomeHeader } from '../components';
 import Footer from '../components/Footer/Footer';
 import '../styles/ContactUs.css';
-import { FaFacebook, FaTwitter, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import axios from 'axios';
 
 const ContactUs = () => {
@@ -85,24 +84,8 @@ const ContactUs = () => {
               {statusMessage && <p>{statusMessage}</p>}
             </form>
           </div>
-          <div className='card-2'>
-            <h4>CONTACT DETAIL</h4>
-            <div className="Contact-detail-item">
-              <FaEnvelope className="Contact-icon" />
-              <span>info@onlineeventfinder.com</span>
-            </div>
-            <div className="contact-icons">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                <FaFacebook />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                <FaTwitter />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                <FaLinkedin />
-              </a>
-            </div>
-          </div>
+          
+          
         </div>
       </div>
       <Footer />

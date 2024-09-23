@@ -8,7 +8,6 @@ A platform to create, find, and register for events.
 - [Environment Variables](#environment-variables)
 - [Usage](#usage)
 - [Future Improvements](#future-improvements)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Project Overview
@@ -21,7 +20,7 @@ The project includes:
 - **Database**: MongoDB is used to store user information, event details, and registrations.
 - **Authentication**: JWT-based authentication for security, with Google OAuth integration for ease of use.
 
-## Features
+## Key Features
 
 - **User Authentication:** Sign up, log in, and log out with JWT authentication or Google OAuth.
 - **Event Management**: Users can create, update, and delete their own events.
@@ -84,11 +83,24 @@ npm install
 **Backend (in the root of the backend directory, create a .env file):** 
 
 ```
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-CLOUDINARY_URL=your_cloudinary_url_for_image_uploads # Optional
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your `.env` file:
+
+**Backend (in the root of the Backend directory, create a .env file):**
+
+```
+MONGO_URI=<your-mongodb-uri>
+JWT_SECRET=<your-jwt-secret>
+EMAIL_USER=<your-email>
+SENDGRID_API_KEY=<your-sendgrid-api-key>
+BASE_URL=<your-backend-base-url>
+FRONTEND_URL=<your-frontend-url>
+JWT_RESET_SECRET=<your-jwt-reset-secret>
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+GOOGLE_CALLBACK_URL=<your-google-callback-url>
+PORT=<your-port-number>
 ```  
 
 **Frontend (in the root of the frontend directory, create a .env file):**
@@ -98,7 +110,7 @@ REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
 REACT_APP_API_BASE_URL=http://localhost:7999/api # If running locally
 ```
 
-**Usage**
+## Usage
 
 1. **Run the backend:** Make sure you're in the backend folder and run:
 
@@ -116,12 +128,13 @@ Or
 npm run dev  
 ```  
 
-3. **Access the app:** Open your browser and go to http://localhost:3000 to start using the app.
+3. **Access the app:** Open your browser and go to http://localhost:5173 to start using the app considering the server port is running on 5173.
 
 ## Future Improvements
 - **Notifications:** Implement email or in-app notifications for event updates.
 - **Mobile Responsiveness:** Improve the mobile design and ensure a seamless experience on smaller devices.
-- **Event Categories:** Add categories to help users filter events by type (e.g., sports, music, education).
+- **Event Categories:** Complete categories to help users filter events by type (e.g., sports, music, education).
 - **Event Recommendations:** Use machine learning to recommend events based on user preferences.
+- **Payment integration:** Integration with Stripe/PayPal for processing payments securely. 
 
 ## License

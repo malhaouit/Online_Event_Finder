@@ -3,11 +3,16 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
   .login-header-logo img {
-    height: 40px;
+    width: 250px;
+    height: 50px;
+    cursor: pointer;
   }
   
   .login-header-nav {
@@ -42,33 +47,35 @@
   color: #999;
 }
   
-  .nav-icon-text {
-    display: flex;
-    align-items: center;
-    color: #333;
-    font-size: 24px; 
-    transition: color 0.3s ease;
-  }
-  
-  .nav-icon-text:hover {
-    color: #12CB44; 
-  }
-  
-  .login-header-auth {
-    display: flex;
-    gap: 15px;
-  }
-  
-  .auth-link {
-    cursor: pointer;
-  }
-  .Icons-LoginHeader {
-    display: flex;
-    align-items: center;
-    gap: 20px; 
-  }
-  /* Responsive Styling */
-  @media (max-width: 768px) {
+.nav-icon-text {
+  display: flex;
+  align-items: center;
+  color: #333;
+  font-size: 24px; 
+  transition: color 0.3s ease;
+}
+
+.nav-icon-text:hover {
+  color: #12CB44; 
+}
+
+.login-header-auth {
+  display: flex;
+  gap: 15px;
+}
+
+.auth-link {
+  cursor: pointer;
+}
+
+.Icons-LoginHeader {
+  display: flex;
+  align-items: center;
+  gap: 30px; 
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
   .login-header {
     flex-direction:column;
     align-items:center;
@@ -77,17 +84,13 @@
     order: 0; /* Ensure logo is always first */
   }
 
-  
+
   .Icons-LoginHeader{
-   display:flex;
+    display:flex;
     flex-direction:row;
     justify-content: center;
     gap: 10px;
-   margin-top: 10px;
+    margin-top: 10px;
     width: 100%;
-
-   
   }
-  
-
 }

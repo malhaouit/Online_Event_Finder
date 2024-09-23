@@ -26,22 +26,22 @@ function LoginHeader() {
       </div>
       {/* Navigation Links */}
       <div className='Icons-LoginHeader'> 
-        <nav className="login-header-nav">
-          <Link to="/">
-            <div className="nav-icon-text">
-              <FaHome />
-            </div>
-          </Link>
-        </nav>
+      <nav className="login-header-nav">
+        <Link to="/">
+          <div className="nav-icon-text">
+            <FaHome />
+          </div>
+        </Link>
+      </nav>
 
-        {/* Authentication Link */}
-        <div className="login-header-auth">
-          <Link to="/signup" className="auth-link">
-            <div className="nav-icon-text">
-              <FaUserPlus />
-            </div>
-          </Link>
-        </div>
+      {/* Authentication Link */}
+      <div className="login-header-auth">
+        <Link to="/signup" className="auth-link">
+          <div className="nav-icon-text">
+            <FaUserPlus />
+          </div>
+        </Link>
+      </div>
       </div>
     </header>
   );

@@ -80,11 +80,6 @@ npm install
 
 ## Environment Variables
 
-**Backend (in the root of the backend directory, create a .env file):** 
-
-```
-## Environment Variables
-
 To run this project, you will need to add the following environment variables to your `.env` file:
 
 **Backend (in the root of the Backend directory, create a .env file):**

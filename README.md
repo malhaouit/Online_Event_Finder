@@ -87,22 +87,22 @@ To run this project, you will need to add the following environment variables to
 ```
 MONGO_URI=<your-mongodb-uri>
 JWT_SECRET=<your-jwt-secret>
-EMAIL_USER=<your-email>
+EMAIL_USER=<your-sender-email>
 SENDGRID_API_KEY=<your-sendgrid-api-key>
-BASE_URL=<your-backend-base-url>
-FRONTEND_URL=<your-frontend-url>
+BASE_URL=http://localhost:7999/
+FRONTEND_URL=http://localhost:5173
 JWT_RESET_SECRET=<your-jwt-reset-secret>
 GOOGLE_CLIENT_ID=<your-google-client-id>
 GOOGLE_CLIENT_SECRET=<your-google-client-secret>
 GOOGLE_CALLBACK_URL=<your-google-callback-url>
-PORT=<your-port-number>
+PORT=7999
 ```  
 
 **Frontend (in the root of the frontend directory, create a .env file):**
 
 ```
 REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
-REACT_APP_API_BASE_URL=http://localhost:7999/api # If running locally
+REACT_APP_API_BASE_URL=http://localhost:7999/api
 ```
 
 ## Usage

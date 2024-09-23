@@ -1,3 +1,4 @@
+// src/index.js;
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
@@ -21,7 +22,7 @@ app.use('/api/auth', require('./routes/authRoute'));
 app.use('/api/event', require('./routes/eventRoute'));
 app.use('/api/profile', require('./routes/profileRoute'));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
+app.use('/api/contact', require('./routes/contactUsRouter'));
 
 const PORT = process.env.PORT;
 

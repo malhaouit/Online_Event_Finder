@@ -128,7 +128,7 @@ const LandingPage = () => {
                 <button className="dropdown-item" onClick={() => handleNavigate('/addEvent')}>
                   Add Events
                 </button>
-                <button className="dropdown-item" onClick={() => handleNavigate('/myEvents')}>
+                <button className="dropdown-item" onClick={() => handleNavigate('/me')}>
                   My Events
                 </button>
                 <button className="dropdown-item" onClick={handleLogout}>

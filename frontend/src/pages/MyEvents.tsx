@@ -1,6 +1,9 @@
+// src/pages/MyEvents.tsx
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import '../styles/MyEvents.css';
+import HomeHeader from '../components/HomeHeader/HomeHeader';
+import Footer from '../components/Footer/Footer';
 
 interface Event {
   _id: string;
@@ -26,7 +29,7 @@ const MyEvents = () => {
   const fetchCreatedEvents = async (page: number) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:7999/api/event/events_created?page=${page}`, {
+      const response = await fetch(`http://localhost:7999/api/event/user/events_created?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -44,7 +47,7 @@ const MyEvents = () => {
   const fetchRegisteredEvents = async (page: number) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:7999/api/event/events_registered?page=${page}`, {
+      const response = await fetch(`http://localhost:7999/api/event/user/events_registered?page=${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -59,35 +62,41 @@ const MyEvents = () => {
 
   return (
     <div className="my-events-page">
-      <button className="back-button" onClick={() => navigate('/allEvents')}>
-        &larr; Back
-      </button>
+      <HomeHeader />
 
-      <h2>My Events</h2>
-      {loading && <p>Loading...</p>}
+      <div className="my-events-content"> {/* Added content wrapper */}
+        <button className="back-button" onClick={() => navigate('/allEvents')}>
+          &larr; Back
+        </button>
 
-      <div className="events-section">
-        <h3>Events I Created</h3>
-        <ul>
-          {createdEvents.map(event => (
-            <li key={event._id}>
-              <strong>{event.title}</strong> - {event.date} - {event.location}
-              <p>Registered Users: {event.registeredUsers?.length || 0}</p>
-            </li>
-          ))}
-        </ul>
+        <h2>My Events</h2>
+        {loading && <p>Loading...</p>}
+
+        <div className="events-section">
+          <h3>Events I Created</h3>
+          <ul>
+            {createdEvents.map(event => (
+              <li key={event._id}>
+                <strong>{event.title}</strong> - {event.date} - {event.location}
+                <p>Registered Users: {event.registeredUsers?.length || 0}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="events-section">
+          <h3>Events I'm Registered For</h3>
+          <ul>
+            {registeredEvents.map(event => (
+              <li key={event._id}>
+                <strong>{event.title}</strong> - {event.date} - {event.location}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      <div className="events-section">
-        <h3>Events I'm Registered For</h3>
-        <ul>
-          {registeredEvents.map(event => (
-            <li key={event._id}>
-              <strong>{event.title}</strong> - {event.date} - {event.location}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <Footer /> 
     </div>
   );
 };
